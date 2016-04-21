@@ -1,0 +1,81 @@
+# Language
+$lang=en
+# productCatalog
+$productCatalog=electronics-cnProductCatalog
+# catalogVersion
+$catalogVersion=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+ 
+# 
+# Import MarketPlace
+#
+INSERT_UPDATE MarketPlace;code[unique=true];name[lang=$lang];URL[unique=true];adapterUrl;tmallOrderStatus(code);timezone
+;tmall;TMALL;http://www.tmall.com;https://<serverip>/tmallapp;WAIT_SELLER_SEND_GOODS;Asia/Shanghai
+
+# 
+# Import MarketPlaceSeller
+#
+INSERT_UPDATE MarketPlaceSeller;name[unique=true];marketplace(name[lang=$lang]);basestore(uid)
+;jjouc001;TMALL;electronics-cn
+
+# 
+# Import MarketPlaceStore
+#
+INSERT_UPDATE MarketPlaceStore;name[unique=true];marketplaceseller(name);marketplace(name[lang=$lang]);currency(isocode);$catalogVersion
+;Burberry;jjouc001;TMALL;CNY;
+
+# 
+# Import Standard Carrier Data
+#
+INSERT_UPDATE StandardCarrier; id[unique=true]; code; name[lang=$lang]
+;001;HOAU;HOAU Express
+;002;DTW;DTW Express
+;003;ZTO;ZTO Express
+;004;YUNDA;YUNDA Express
+;005;SF;SF Express
+;006;EMS;EMS Express
+;007;ZJS;ZJS Express
+;008;YTO;YTO Express
+;009;POST;POST Express
+;010;OTHER;OTHER Express
+;011;AIR;AIR Express
+;012;MGSD;MGSD Express
+;013;BHWL;BHWL Express
+;014;UNIPS;UNIPS Express
+;015;YUD;YUD Express
+;016;YC;YC Express
+;017;DFH;DFH Express
+;018;CYEXP;CYEXP Express
+;019;WND;WND Express
+;020;GZLT;GZLT Express
+;021;PKGJWL;PKGJWL Express
+;022;HTKY;HTKY Express
+;023;YCT;YCT Express
+;024;SURE;SURE Express
+;025;DBL;DBL Express
+;026;UC;UC Express
+;027;ESB;ESB Express
+;028;GTO;GTO Express
+;029;LB;LB Express
+;030;POSTB;POSTB Express
+;031;QRT;QRT Express
+;032;FAST;FAST Express
+;033;TTKDEX;TTKDEX Express
+;034;HZABC;HZABC Express
+;035;EYB;EYB Express
+;036;DBKD;DBKD Express
+;037;CNEX;CNEX Express
+;038;GDEMS;GDEMS Express
+;039;QFKD;QFKD Express
+;040;FEDEX;FEDEX Express
+;041;UAPEX;UAPEX Express
+;042;XB;XB Express
+;043;STO;STO Express
+;044;XFWL;XFWL Express
+;045;ZTOSH;ZTOSH Express
+;046;ZTOGZ;ZTOGZ Express
+;047;SHQ;SHQ Express
+;048;CRE;CRE Express
+;049;GZFY;GZFY Express
+;050;BEST;BEST Express
+;051;YANWENGZ;YANWENGZ Express
+;052;YANWENBJ;YANWENBJ Express

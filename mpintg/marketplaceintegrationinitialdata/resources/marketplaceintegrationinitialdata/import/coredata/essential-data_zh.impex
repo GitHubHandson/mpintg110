@@ -1,0 +1,136 @@
+$supportedPaymentModes=supportedPaymentModes(code)
+
+# Currencies
+$ukCurrency=GBP
+$jpCurrency=JPY
+$usCurrency=USD
+$europeCurrency=EUR
+# Language
+$lang=zh
+
+# 
+# Import Region
+#
+INSERT_UPDATE Region;country(isocode);isocode[unique=true];isocodeShort;name[lang=$lang];active[default=true]
+;CN;CN-11;11;"北京"
+;CN;CN-50;50;"重庆"
+;CN;CN-31;31;"上海"
+;CN;CN-12;12;"天津"
+
+# China
+INSERT_UPDATE ZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='china'][unique=true];currency(isocode)[unique=true];value;minimum[unique=true]
+;free;;$usCurrency;14,49;0,00
+;free;;$jpCurrency;99,49;0,00
+;free;;$ukCurrency;18,49;0,00
+;free;;$europeCurrency;27,99;0,00
+;post;;$usCurrency;14,49;0,00
+;post;;$jpCurrency;99,49;0,00
+;post;;$ukCurrency;18,49;0,00
+;post;;$europeCurrency;27,99;0,00
+;express;;$usCurrency;14,49;0,00
+;express;;$jpCurrency;99,49;0,00
+;express;;$ukCurrency;18,49;0,00
+;express;;$europeCurrency;27,99;0,00
+;ems;;$usCurrency;14,49;0,00
+;ems;;$jpCurrency;99,49;0,00
+;ems;;$ukCurrency;18,49;0,00
+;ems;;$europeCurrency;27,99;0,00
+;virtual;;$usCurrency;14,49;0,00
+;virtual;;$jpCurrency;99,49;0,00
+;virtual;;$ukCurrency;18,49;0,00
+;virtual;;$europeCurrency;27,99;0,00
+;25;;$usCurrency;14,49;0,00
+;25;;$jpCurrency;99,49;0,00
+;25;;$ukCurrency;18,49;0,00
+;25;;$europeCurrency;27,99;0,00
+;26;;$usCurrency;14,49;0,00
+;26;;$jpCurrency;99,49;0,00
+;26;;$ukCurrency;18,49;0,00
+;26;;$europeCurrency;27,99;0,00
+
+# Zone Delivery Modes
+INSERT_UPDATE ZoneDeliveryMode;code[unique=true];$supportedPaymentModes;name[lang=$lang];net;active[default=true]
+;free;alipay;"卖家包邮(Tmall)";true
+;post;alipay;"平邮(Tmall)";true
+;express;alipay;"快递(Tmall)";true
+;ems;alipay;"EMS(Tmall)";true
+;virtual;alipay;"虚拟发货(Tmall)";true
+;25;alipay;"次日配送(Tmall)";true
+;26;alipay;"预约配送(Tmall)";true
+# China
+INSERT_UPDATE ZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='china'][unique=true];currency(isocode)[unique=true];value;minimum[unique=true]
+;free;;$usCurrency;14,49;0,00
+;free;;$jpCurrency;99,49;0,00
+;free;;$ukCurrency;18,49;0,00
+;free;;$europeCurrency;27,99;0,00
+;post;;$usCurrency;14,49;0,00
+;post;;$jpCurrency;99,49;0,00
+;post;;$ukCurrency;18,49;0,00
+;post;;$europeCurrency;27,99;0,00
+;express;;$usCurrency;14,49;0,00
+;express;;$jpCurrency;99,49;0,00
+;express;;$ukCurrency;18,49;0,00
+;express;;$europeCurrency;27,99;0,00
+;ems;;$usCurrency;14,49;0,00
+;ems;;$jpCurrency;99,49;0,00
+;ems;;$ukCurrency;18,49;0,00
+;ems;;$europeCurrency;27,99;0,00
+;virtual;;$usCurrency;14,49;0,00
+;virtual;;$jpCurrency;99,49;0,00
+;virtual;;$ukCurrency;18,49;0,00
+;virtual;;$europeCurrency;27,99;0,00
+;25;;$usCurrency;14,49;0,00
+;25;;$jpCurrency;99,49;0,00
+;25;;$ukCurrency;18,49;0,00
+;25;;$europeCurrency;27,99;0,00
+;26;;$usCurrency;14,49;0,00
+;26;;$jpCurrency;99,49;0,00
+;26;;$ukCurrency;18,49;0,00
+;26;;$europeCurrency;27,99;0,00
+
+# Order Status
+INSERT_UPDATE TmallOrderStatus; code[unique=true];name[lang=$lang];orderStatus(code)
+;TRADE_NO_CREATE_PAY;没有创建支付宝交易;CREATED
+;WAIT_BUYER_PAY;等待买家付款;AWAITING_PAYMENT
+;WAIT_SELLER_SEND_GOODS;等待卖家发货;READY
+;WAIT_BUYER_CONFIRM_GOODS;等待买家确认收货;COMPLETED
+;TRADE_BUYER_SIGNED;买家已签收;COMPLETED
+;TRADE_FINISHED;交易成功;COMPLETED
+;TRADE_CLOSED;交易自动关闭;COMPLETED
+;TRADE_CLOSED_BY_TAOBAO;交易主动关闭;CANCELLED
+;SELLER_CONSIGNED_PART;卖家部分发货;READY
+
+
+# Order Type
+INSERT_UPDATE TmallOrderType; code[unique=true];name[lang=$lang];
+;FIXED;一口价;
+;AUCTION;拍卖;
+;GUARANTEE_TRADE;一口价、拍卖;
+;AUTO_DELIVERY;自动发货;
+;INDEPENDENT_SIMPLE_TRADE;旺店入门版交易;
+;INDEPENDENT_SHOP_TRADE;旺店标准版交易;
+;EC;直冲;
+;COD;货到付款;
+;FENXIAO;分销;
+;GAME_EQUIPMENT;游戏装备;
+;SHOPEX_TRADE;ShopEX交易;
+;NETCN_TRADE;万网交易;
+;EXTERNAL_TRADE;统一外部交易;
+;O2O_OFFLINETRADE;O2O交易;
+;STEP;万人团;
+;NOPAID;无付款订单;
+;PRE_AUTH_TYPE;预授权0元购机交易;
+
+# Action Status
+INSERT_UPDATE MarketplaceStatus; code[unique=true];name[lang=$lang];division;
+;SUCCESS;处理成功;ACTIONSTATUS;
+;ERROR;处理错误;ACTIONSTATUS;
+;FAILURE;处理失败;ACTIONSTATUS;
+;PENDING;处理中;ACTIONSTATUS;
+
+# Message Source
+INSERT_UPDATE MessageSource; code[unique=true];name[lang=$lang];
+;BK;Backoffice;
+;MP;平台店铺;
+;DH;DataHub;
+;TM;天猫;

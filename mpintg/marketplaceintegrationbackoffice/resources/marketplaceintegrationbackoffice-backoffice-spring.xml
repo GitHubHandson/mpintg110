@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ~ [y] hybris Platform ~ ~ Copyright (c) 2000-2016 hybris AG ~ All rights reserved. ~ ~ This software is the confidential and proprietary 
+	information of hybris ~ ("Confidential Information"). You shall not disclose such Confidential ~ Information and shall use it only 
+	in accordance with the terms of the ~ license agreement you entered into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<context:component-scan base-package="de.hybris.platform.marketplaceintegrationbackoffice" />
+
+	<aop:aspectj-autoproxy proxy-target-class="false" />
+
+	<bean id="marketplaceintegrationbackofficeService" class="de.hybris.platform.marketplaceintegrationbackoffice.services.MarketplaceintegrationbackofficeService" />
+
+	<bean id="marketplaceintegrationbackofficeLabelLocator" class="com.hybris.cockpitng.util.labels.ResourcesLabelLocator"
+		scope="singleton" init-method="init" lazy-init="false">
+		<property name="location" value="/marketplaceintegrationbackoffice-backoffice-labels/" />
+		<property name="name" value="labels" />
+	</bean>
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:marketplaceintegrationbackoffice.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<alias name="marketplaceIntegrationConfInitializeRenderer" alias="marketplaceAuthInitRenderer" />
+	<bean id="marketplaceIntegrationConfInitializeRenderer" class="de.hybris.platform.marketplaceintegrationbackoffice.renderer.MarketplaceIntegrationConfInitializeRenderer"
+		scope="prototype">
+		<property name="attributeDescriptionIconRenderer" ref="attributeDescriptionIconRenderer" />
+		<property name="objectFacade" ref="objectFacade" />
+		<property name="modelService" ref="modelService" />
+		<property name="cockpitLocaleService" ref="cockpitLocaleService" />
+		<property name="cockpitUserService" ref="cockpitUserService" />
+		<property name="labelService" ref="labelService" />
+		<property name="permissionFacade" ref="permissionFacade" />
+		<property name="propertyValueService" ref="propertyValueService" />
+		<property name="cockpitProperties" ref="cockpitProperties" />
+		<property name="permissionFacadeStrategy" ref="defaultPermissionFacadeStrategy" />
+		<property name="widgetRenderingUtils" ref="widgetRenderingUtils" />
+	</bean>
+
+	<alias name="defaultMarketplaceStoreTokenRefreshRenderer" alias="marketplaceRefreshRenderer" />
+	<bean id="defaultMarketplaceStoreTokenRefreshRenderer" class="de.hybris.platform.marketplaceintegrationbackoffice.renderer.MarketplaceStoreTokenRefreshRenderer"
+		scope="prototype">
+		<property name="attributeDescriptionIconRenderer" ref="attributeDescriptionIconRenderer" />
+		<property name="objectFacade" ref="objectFacade" />
+		<property name="modelService" ref="modelService" />
+		<property name="cockpitLocaleService" ref="cockpitLocaleService" />
+		<property name="cockpitUserService" ref="cockpitUserService" />
+		<property name="labelService" ref="labelService" />
+		<property name="permissionFacade" ref="permissionFacade" />
+		<property name="propertyValueService" ref="propertyValueService" />
+		<property name="cockpitProperties" ref="cockpitProperties" />
+		<property name="permissionFacadeStrategy" ref="defaultPermissionFacadeStrategy" />
+		<property name="widgetRenderingUtils" ref="widgetRenderingUtils" />
+		<property name="marketplaceClient" ref="marketplaceclient" />
+		<property name="marketplaceLogger" ref="marketplaceLogger" />
+	</bean>
+
+	<alias name="marketplaceIntegrationOrderInitialRenderer" alias="marketplaceOrderInitialRenderer" />
+	<bean id="marketplaceIntegrationOrderInitialRenderer" class="de.hybris.platform.marketplaceintegrationbackoffice.renderer.MarketplaceIntegrationOrderInitialRenderer"
+		scope="prototype">
+		<property name="attributeDescriptionIconRenderer" ref="attributeDescriptionIconRenderer" />
+		<property name="objectFacade" ref="objectFacade" />
+		<property name="modelService" ref="modelService" />
+		<property name="cockpitLocaleService" ref="cockpitLocaleService" />
+		<property name="cockpitUserService" ref="cockpitUserService" />
+		<property name="labelService" ref="labelService" />
+		<property name="permissionFacade" ref="permissionFacade" />
+		<property name="propertyValueService" ref="propertyValueService" />
+		<property name="cockpitProperties" ref="cockpitProperties" />
+		<property name="permissionFacadeStrategy" ref="defaultPermissionFacadeStrategy" />
+		<property name="widgetRenderingUtils" ref="widgetRenderingUtils" />
+		<!-- <property name="marketplaceHttpUtil" ref="marketplaceHttpUtil" /> -->
+	</bean>
+
+	<alias name="marketplaceIntegrationOrderRequestRenderer" alias="marketplaceOrderRequestRenderer" />
+	<bean id="marketplaceIntegrationOrderRequestRenderer" class="de.hybris.platform.marketplaceintegrationbackoffice.renderer.MarketplaceIntegrationOrderRequestRenderer"
+		scope="prototype">
+		<property name="attributeDescriptionIconRenderer" ref="attributeDescriptionIconRenderer" />
+		<property name="objectFacade" ref="objectFacade" />
+		<property name="modelService" ref="modelService" />
+		<property name="cockpitLocaleService" ref="cockpitLocaleService" />
+		<property name="cockpitUserService" ref="cockpitUserService" />
+		<property name="labelService" ref="labelService" />
+		<property name="permissionFacade" ref="permissionFacade" />
+		<property name="propertyValueService" ref="propertyValueService" />
+		<property name="cockpitProperties" ref="cockpitProperties" />
+		<property name="permissionFacadeStrategy" ref="defaultPermissionFacadeStrategy" />
+		<property name="widgetRenderingUtils" ref="widgetRenderingUtils" />
+		<!-- <property name="marketplaceHttpUtil" ref="marketplaceHttpUtil" /> -->
+	</bean>
+
+	<alias name="marketplaceIntegrationOrderIncrementalRenderer" alias="marketplaceOrderIncrementalRenderer" />
+	<bean id="marketplaceIntegrationOrderIncrementalRenderer" class="de.hybris.platform.marketplaceintegrationbackoffice.renderer.MarketplaceIntegrationOrderIncrementalRenderer"
+		scope="prototype">
+		<property name="attributeDescriptionIconRenderer" ref="attributeDescriptionIconRenderer" />
+		<property name="objectFacade" ref="objectFacade" />
+		<property name="modelService" ref="modelService" />
+		<property name="cockpitLocaleService" ref="cockpitLocaleService" />
+		<property name="cockpitUserService" ref="cockpitUserService" />
+		<property name="labelService" ref="labelService" />
+		<property name="permissionFacade" ref="permissionFacade" />
+		<property name="propertyValueService" ref="propertyValueService" />
+		<property name="cockpitProperties" ref="cockpitProperties" />
+		<property name="permissionFacadeStrategy" ref="defaultPermissionFacadeStrategy" />
+		<property name="widgetRenderingUtils" ref="widgetRenderingUtils" />
+		<!-- <property name="marketplaceHttpUtil" ref="marketplaceHttpUtil" /> -->
+	</bean>
+
+	<alias name="marketplaceintegrationbackofficeloggerimpl" alias="marketplaceLogger" />
+	<bean id="marketplaceintegrationbackofficeloggerimpl" class="de.hybris.platform.marketplaceintegrationbackoffice.utils.MarketplaceIntegrationBackofficeLoggerImpl" />
+
+	<alias name="marketplaceintegrationbackofficehttpclientimpl" alias="marketplaceclient" />
+	<bean id="marketplaceintegrationbackofficehttpclientimpl" class="de.hybris.platform.marketplaceintegrationbackoffice.utils.MarketplaceintegrationbackofficeHttpClientImpl" />
+
+	<alias name="marketplaceintegrationbackofficehttputilimpl" alias="marketplaceHttpUtil" />
+	<bean id="marketplaceintegrationbackofficehttputilimpl" class="de.hybris.platform.marketplaceintegrationbackoffice.utils.MarketplaceintegrationbackofficeHttpUtilImpl">
+		<property name="httpHeaders">
+			<map>
+				<entry key="Content-Type" value="application/json" />
+			</map>
+		</property>
+		<property name="baseAuthUser">
+			<value>${auth.baseAuthUser}</value>
+		</property>
+		<property name="baseAuthPassword">
+			<value>${auth.baseAuthPassword}</value>
+		</property>
+	</bean>
+
+	<alias name="marketplaceintegrationbackofficeRestTemplateUtil" alias="restTemplateUtil" />
+	<bean id="marketplaceintegrationbackofficeRestTemplateUtil" class="de.hybris.platform.marketplaceintegrationbackoffice.utils.MarketplaceintegrationbackofficeRestTemplateUtil">
+		<property name="defaultContentType" value="application/json;charset=UTF-8" />
+		<property name="baseAuthUser" value="${auth.baseAuthUser}" />
+		<property name="baseAuthPwd" value="${auth.baseAuthPassword}" />
+	</bean>
+
+	<!-- <bean id="mpintglogbackofficeDao" class="de.hybris.platform.marketplaceintegrationbackoffice.dao.MpintglogbackofficeDaoImpl" />
+
+	<alias name="marketplaceintegrationbackofficeLogUtil" alias="logUtil" />
+	<bean id="marketplaceintegrationbackofficeLogUtil" class="de.hybris.platform.marketplaceintegrationbackoffice.utils.MarketplaceintegrationbackofficeLogUtil">
+	</bean>-->
+ </beans>

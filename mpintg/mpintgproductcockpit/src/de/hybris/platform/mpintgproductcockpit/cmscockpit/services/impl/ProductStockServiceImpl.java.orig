@@ -1,0 +1,126 @@
+package com.sap.acc.cockpit.cmscockpit.services.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< Updated upstream
+import org.springframework.beans.factory.annotation.Required;
+=======
+>>>>>>> Stashed changes
+
+import com.sap.acc.cockpit.cmscockpit.dao.impl.ProductStockDaoImpl;
+import com.sap.acc.cockpit.cmscockpit.services.ProductStockService;
+
+import de.hybris.platform.core.model.product.ProductModel;
+import de.hybris.platform.ordersplitting.model.StockLevelModel;
+import de.hybris.platform.ordersplitting.model.WarehouseModel;
+import de.hybris.platform.store.BaseStoreModel;
+
+public class ProductStockServiceImpl implements ProductStockService {
+
+<<<<<<< Updated upstream
+	public ProductStockDaoImpl getProductStockDao() {
+		return productStockDao;
+	}
+	
+	@Required
+	public void setProductStockDao(ProductStockDaoImpl productStockDao) {
+		this.productStockDao = productStockDao;
+	}
+
+	ProductStockDaoImpl productStockDao;
+	
+
+	@Override
+	public int getAvailableStock(BaseStoreModel basestore, String productId) {
+		ProductModel product = productStockDao.getProductById(productId);
+		int allAvailableStock = 0;
+		for (int i = 0; i < warehouses.size(); i++) {
+		} else {
+			if (stocklevel != null) {
+				allAvailableStock += stocklevel.getAvailable();
+		}
+		return allAvailableStock;
+=======
+	
+	@Autowired
+	ProductStockDaoImpl productStockDao;
+	
+	@Override
+	public String getTmallProductId(String productId) {
+		ProductModel product = productStockDao.getProductById(productId);
+		if (product != null) {
+			return product.getTamllProductId();
+		} else {
+			return null;
+>>>>>>> Stashed changes
+		}
+	}
+
+	@Override
+<<<<<<< Updated upstream
+	public BaseStoreModel getBaseStorebyProduct(String productId) {
+		ProductModel product = productStockDao.getProductById(productId);
+		if(product != null){
+			return product.getTamllCategoryId();
+		} else {
+		}
+		return baseStore;
+=======
+	public String getTmallcategoryId(String productId) {
+		ProductModel product = productStockDao.getProductById(productId);
+		if (product != null) {
+			return product.getTamllCategoryId();
+		} else {
+			return null;
+>>>>>>> Stashed changes
+		}
+	}
+
+	@Override
+	public int getAvailableStockbyPK(BaseStoreModel basestore, String productPK) {
+		List<WarehouseModel> warehouses = basestore.getWarehouses();
+		int allAvailableStock = 0;
+		for (int i = 0; i < warehouses.size(); i++) {
+			ProductModel product = productStockDao.getProductbyPK(productPK);
+			String productId = product.getCode();
+			StockLevelModel stocklevel = productStockDao.getStockLevel(warehouses.get(i).getPk(), productId);
+			if (stocklevel != null) {
+				allAvailableStock += stocklevel.getAvailable();
+			}
+		}
+		return allAvailableStock;
+	}
+
+	@Override
+<<<<<<< Updated upstream
+	public BaseStoreModel getBaseStorebyPK(String productPK) {
+		BaseStoreModel baseStore = null;
+		ProductModel product = productStockDao.getProductbyPK(productPK);
+		if(product != null){
+			if(product.getCatalogVersion().getCatalog().getBaseStores().iterator().hasNext()){
+				baseStore = product.getCatalogVersion().getCatalog().getBaseStores().iterator().next();
+			}
+		}
+=======
+	public BaseStoreModel getBaseStorebyProduct(String productId) {
+		ProductModel product = productStockDao.getProductById(productId);
+		BaseStoreModel baseStore = product.getCatalogVersion().getCatalog().getBaseStores().iterator().next();
+>>>>>>> Stashed changes
+		return baseStore;
+	}
+
+	@Override
+	public String getMarketplaceIntegrationIdbyProduct(String productId) {
+		ProductModel product = productStockDao.getProductById(productId);
+		//ProductModel product = productStockDao.getProductByPk(productId);
+		BaseStoreModel baseStore = product.getCatalogVersion().getCatalog().getBaseStores().iterator().next();
+		String id = productStockDao.getIntegrationIdByBasestore(baseStore.getPk().toString());
+		return id;
+	}
+
+	@Override
+	public ProductModel getProductByPK(String productPK) {
+		return productStockDao.getProductByPK(productPK);
+	}
+}

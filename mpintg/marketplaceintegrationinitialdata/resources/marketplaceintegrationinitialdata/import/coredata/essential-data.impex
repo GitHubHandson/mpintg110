@@ -1,0 +1,90 @@
+#
+# Import ZoneDeliveryMode
+#
+$supportedPaymentModes=supportedPaymentModes(code)
+
+# Currencies
+$ukCurrency=GBP
+$jpCurrency=JPY
+$usCurrency=USD
+$europeCurrency=EUR
+# Language
+$lang=en
+
+# Zone Delivery Modes
+INSERT_UPDATE ZoneDeliveryMode;code[unique=true];$supportedPaymentModes;name[lang=$lang];net;active[default=true]
+;free;alipay;"Free Delivery(Tmall)";true
+;post;alipay;"Post Delivery(Tmall)";true
+;express;alipay;"Express Delivery(Tmall)";true
+;ems;alipay;"EMS(Tmall)";true
+;virtual;alipay;"Virtual Delivery(Tmall)";true
+;25;alipay;"Next Day Delivery(Tmall)";true
+;26;alipay;"Appointment Delivery(Tmall)";true
+
+# China
+INSERT_UPDATE ZoneDeliveryModeValue;deliveryMode(code)[unique=true];zone(code)[default='china'][unique=true];currency(isocode)[unique=true];value;minimum[unique=true]
+;free;;$usCurrency;14,49;0,00
+;free;;$jpCurrency;99,49;0,00
+;free;;$ukCurrency;18,49;0,00
+;free;;$europeCurrency;27,99;0,00
+;post;;$usCurrency;14,49;0,00
+;post;;$jpCurrency;99,49;0,00
+;post;;$ukCurrency;18,49;0,00
+;post;;$europeCurrency;27,99;0,00
+;express;;$usCurrency;14,49;0,00
+;express;;$jpCurrency;99,49;0,00
+;express;;$ukCurrency;18,49;0,00
+;express;;$europeCurrency;27,99;0,00
+;ems;;$usCurrency;14,49;0,00
+;ems;;$jpCurrency;99,49;0,00
+;ems;;$ukCurrency;18,49;0,00
+;ems;;$europeCurrency;27,99;0,00
+;virtual;;$usCurrency;14,49;0,00
+;virtual;;$jpCurrency;99,49;0,00
+;virtual;;$ukCurrency;18,49;0,00
+;virtual;;$europeCurrency;27,99;0,00
+;25;;$usCurrency;14,49;0,00
+;25;;$jpCurrency;99,49;0,00
+;25;;$ukCurrency;18,49;0,00
+;25;;$europeCurrency;27,99;0,00
+;26;;$usCurrency;14,49;0,00
+;26;;$jpCurrency;99,49;0,00
+;26;;$ukCurrency;18,49;0,00
+;26;;$europeCurrency;27,99;0,00
+#
+# Import Order Status
+#
+
+# Order Status
+INSERT_UPDATE TmallOrderStatus; code[unique=true];name[lang=$lang];orderStatus(code)
+;TRADE_NO_CREATE_PAY;Tmall trade created but alipay not;CREATED;
+;WAIT_BUYER_PAY;Wait buyer pay;AWAITING_PAYMENT
+;WAIT_SELLER_SEND_GOODS;Wait for consignment;READY
+;WAIT_BUYER_CONFIRM_GOODS;Wait for delivery;COMPLETED
+;TRADE_BUYER_SIGNED;Signed for delivery;COMPLETED
+;TRADE_FINISHED;Trade finished;COMPLETED
+;TRADE_CLOSED;Trade closed by buyer;COMPLETED
+;TRADE_CLOSED_BY_TAOBAO;Trade closed by taobao;CANCELLED
+;SELLER_CONSIGNED_PART;Partially consigned;READY
+
+# Order Type
+INSERT_UPDATE TmallOrderType; code[unique=true];name[lang=$lang];
+;FIXED;fixed;
+;AUCTION;auction;
+;GUARANTEE_TRADE;guarantee_trade;
+;AUTO_DELIVERY;auto_delivery;
+;INDEPENDENT_SIMPLE_TRADE;independent_simple_trade;
+;INDEPENDENT_SHOP_TRADE;independent_shop_trade;
+;EC;ec;
+;COD;cod;
+;FENXIAO;fenxiao;
+;GAME_EQUIPMENT;game_equipment;
+;SHOPEX_TRADE;shopex_trade;
+;NETCN_TRADE;netcn_trade;
+;EXTERNAL_TRADE;external_trade;
+;O2O_OFFLINETRADE;o2o_offlinetrade;
+;STEP;step;
+;NOPAID;nopaid;
+;PRE_AUTH_TYPE;pre_auth_type;
+
+

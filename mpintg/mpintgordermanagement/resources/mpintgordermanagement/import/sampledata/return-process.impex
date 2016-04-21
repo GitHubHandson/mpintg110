@@ -1,0 +1,11 @@
+$storeUid=electronics
+$storeCnUid=electronics-cn
+$returnProcessCode=return-process
+$tmallProcessCode=tmall-order-process
+
+# Base Store
+INSERT_UPDATE BaseStore;uid[unique=true];createReturnProcessCode;
+;$storeUid;$returnProcessCode
+
+INSERT_UPDATE BaseStore;uid[unique=true];createReturnProcessCode;submitOrderProcessCode
+;$storeCnUid;$returnProcessCode;$tmallProcessCode

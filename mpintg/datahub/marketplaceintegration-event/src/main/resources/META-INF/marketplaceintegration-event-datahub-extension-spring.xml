@@ -1,0 +1,47 @@
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean name="compositionCompletedEventListener" class="com.hybris.datahub.event.CompositionCompletedEventListener"
+		 parent="abstractPoolActionInitiationEventListener">
+		<property name="targetSystem">
+			<list>
+				<value>HybrisCoreInstallation</value>
+				<value>HybrisCoreInstallation2</value>
+			</list>
+		</property>
+		<property name="eventPublicationService" ref="eventPublicationService" />
+	</bean>
+
+	<bean name="dataLoadedEventListener" class="com.hybris.datahub.event.DataLoadedEventListener" parent="abstractPoolActionInitiationEventListener">
+		<property name="eventPublicationService" ref="eventPublicationService" />
+	</bean>
+
+	<bean name="feedCreationListener" class="com.hybris.datahub.event.FeedCreationListener">
+		<property name="feedPoolNameMap">
+			<map>
+				<entry key="DEFAULT_FEED" value="GLOBAL" />
+				<entry key="MARKETPLACE_LOG_FEED" value="MARKETPLACE_LOG_POOL" />
+			</map>
+		</property>			
+		<property name="feedService" ref="dataHubFeedService" />
+	</bean>
+
+	<bean name="publicationCompletedEventListener" class="com.hybris.datahub.event.PublicationCompletedEventListener">
+		<property name="eventPublicationService" ref="eventPublicationService" />
+		<property name="poolActionService" ref="poolActionService" />
+	</bean>
+
+</beans>

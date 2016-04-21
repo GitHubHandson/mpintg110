@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action-definition id="de.hybris.mpintgomsbackoffice.actions.syncaction"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+    <name>sync.marketplace.name</name>
+    <description>Sync To Marketplace</description>
+    <author>hybris</author>
+    <version>1.0</version>
+
+    <actionClassName>de.hybris.platform.mpintgomsbackoffice.actions.sync.SyncToMarketplaceAction</actionClassName>
+    <inputType>de.hybris.platform.ordersplitting.model.ConsignmentModel</inputType>
+    <outputType>de.hybris.platform.ordersplitting.model.ConsignmentModel</outputType>
+
+    <iconUri>icons/icon_action_sync_active.png</iconUri>
+    <iconDisabledUri>icons/icon_action_sync_disabled.png</iconDisabledUri>
+    <iconHoverUri>icons/icon_action_sync_hover.png</iconHoverUri>
+
+    <settings>
+        <setting key="viewMode" default-value="iconAndText"/>
+    </settings>
+</action-definition>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="datahub-webapp" metadata-complete="true" version="3.0">
+  <absolute-ordering/>
+  <display-name>com.hybris.datahub:datahub-webapp:5.7.0.2-RC1</display-name>
+  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>com.hybris.datahub.spring.ExtensionEnabledXmlWebApplicationContext</param-value>
+  </context-param>
+  <context-param>
+    <param-name>contextId</param-name>
+    <param-value>DataHubWebApplicationContext</param-value>
+  </context-param>
+  <resource-ref>
+    <description>Primary database</description>
+    <res-ref-name>datahub</res-ref-name>
+    <lookup-name>datahub</lookup-name>
+  </resource-ref>
+  <listener>
+    <listener-class>com.hybris.datahub.spring.DataHubServletContextListener</listener-class>
+  </listener>
+  <servlet>
+    <servlet-name>Data Hub Web Services</servlet-name>
+    <servlet-class>com.sun.jersey.spi.spring.container.servlet.SpringServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:/META-INF/datahub-webapp-servlet-spring.xml</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.packages</param-name>
+      <param-value>com.hybris.datahub</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerRequestFilters</param-name>
+      <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.spi.container.ContainerResponseFilters</param-name>
+      <param-value>com.sun.jersey.api.container.filter.LoggingFilter</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+      <param-value>true</param-value>
+    </init-param>
+    <init-param>
+      <param-name>com.sun.jersey.config.property.resourceConfigClass</param-name>
+      <param-value>com.hybris.datahub.rest.config.UriExtensionsConfig</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Data Hub Web Services</servlet-name>
+    <url-pattern>/v1/*</url-pattern>
+  </servlet-mapping>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Marketplace Integration Web requires authentication</web-resource-name>
+      <url-pattern>/v1/marketplaceintegration/*</url-pattern>
+      <http-method>GET</http-method>
+      <http-method>POST</http-method>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>marketplaceintegration</role-name>
+    </auth-constraint>
+  </security-constraint>
+  <login-config>
+    <auth-method>BASIC</auth-method>
+  </login-config>
+</web-app>

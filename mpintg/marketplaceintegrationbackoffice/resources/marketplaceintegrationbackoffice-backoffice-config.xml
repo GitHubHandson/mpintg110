@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- ~ [y] hybris Platform ~ ~ Copyright (c) 2000-2016 hybris AG ~ All rights reserved. ~ ~ This software is the confidential and proprietary 
+	information of hybris ~ ("Confidential Information"). You shall not disclose such Confidential ~ Information and shall use it only 
+	in accordance with the terms of the ~ license agreement you entered into with hybris. -->
+
+<config xmlns="http://www.hybris.com/cockpit/config" xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+	<!-- explorer-tree& node -->
+	<context component="explorer-tree" merge-by="module">
+		<explorer-tree:explorer-tree xmlns:explorer-tree="http://www.hybris.com/cockpitng/config/explorertree">
+			<explorer-tree:navigation-node id="treenode.MarketplaceIntegration">
+				<explorer-tree:type-node code="Marketplace" id="marketplace_typenode_marketplace" />
+				<explorer-tree:type-node code="MarketplaceSeller" id="marketplace_typenode_marketplaceseller" />
+				<explorer-tree:type-node code="Marketplacestore" id="marketplace_typenode_marketplacestore" />
+				<explorer-tree:type-node code="MarketplaceLog" id="marketplace_typenode_marketplacelog" />
+			</explorer-tree:navigation-node>
+		</explorer-tree:explorer-tree>
+	</context>
+
+	<context type="MarketplaceOrder" component="editor-area" merge-by="module" parent="auto">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="backoffice.tab.marketplaceorder.name">
+				<editorArea:section name="hmc.common">
+					<editorArea:attribute qualifier="title" />
+					<editorArea:attribute qualifier="tmallOrderType" />
+					<editorArea:attribute qualifier="seller" />
+					<editorArea:attribute qualifier="marketplaceStore" />
+					<editorArea:attribute qualifier="buyerRemark" />
+					<editorArea:attribute qualifier="sellerMemo" />
+					<editorArea:attribute qualifier="isCompleted" readonly="true" />
+				</editorArea:section>
+				<editorArea:section name="hmc.status" columns="3">
+					<editorArea:attribute qualifier="externalCreatedDate" />
+					<editorArea:attribute qualifier="externalModifiedDate" />
+					<editorArea:attribute qualifier="externalEndDate" />
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context type="TmallOrder" component="editor-area" merge-by="type" parent="MarketplaceOrder">
+		<editorArea xmlns="http://www.hybris.com/cockpitng/component/editorArea">
+			<tab name="backoffice.tab.marketplaceorder.name">
+				<section name="hmc.common">
+					<attribute qualifier="tmallOrderStatus"></attribute>
+					<attribute qualifier="tmallOrderId"></attribute>
+					<attribute qualifier="alipayTransId"></attribute>
+				</section>
+			</tab>
+		</editorArea>
+	</context>
+
+	<context type="TmallOrderEntry" component="editor-area" merge-by="type" parent="OrderEntry">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="hmc.info">
+				<editorArea:section name="backoffice.tab.marketplace.info" columns="2">
+					<editorArea:attribute qualifier="oid" />
+					<editorArea:attribute qualifier="endTime" />
+					<editorArea:attribute qualifier="quantityStatus" />
+					<editorArea:attribute qualifier="refundStatus" />
+					<editorArea:attribute qualifier="entryStatus" />
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<!-- context component="create-wizard" type="MarketplaceSeller" -->
+
+	<context component="create-wizard" type="Marketplace">
+		<wz:flow xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" id="MarketplaceWizard" title="create.title(ctx.TYPE_CODE)">
+			<wz:prepare id="groupPrepare">
+				<wz:initialize property="newMarketplace" type="ctx.TYPE_CODE" />
+			</wz:prepare>
+			<wz:step id="step1" label="create.marketplace.essential.label">
+				<wz:content id="step1.content">
+					<wz:property-list root="newMarketplace">
+						<wz:property qualifier="code" type="java.lang.String" />
+						<wz:property qualifier="name" type="java.lang.String" />
+						<wz:property qualifier="url" type="java.lang.String" />
+						<wz:property qualifier="adapterUrl" type="java.lang.String" />
+						<wz:property qualifier="tmallOrderStatus" />
+						<wz:property qualifier="timezone" type="java.lang.String" />
+					</wz:property-list>
+				</wz:content>
+				<wz:navigation id="step1.navigation">
+					<wz:cancel />
+					<wz:done visible="!#empty(newMarketplace.url)">
+						<wz:save property="newMarketplace" />
+					</wz:done>
+				</wz:navigation>
+			</wz:step>
+		</wz:flow>
+	</context>
+
+	<context component="create-wizard" type="MarketplaceSeller">
+		<wz:flow xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" id="MarketplaceSellerWizard" title="create.title(ctx.TYPE_CODE)">
+			<wz:prepare id="groupPrepare">
+				<wz:initialize property="newSeller" type="ctx.TYPE_CODE" />
+			</wz:prepare>
+			<wz:step id="step1" label="create.marketplaceseller.essential.label">
+				<wz:content id="step1.content">
+					<wz:property-list root="newSeller">
+						<wz:property qualifier="name" type="java.lang.String" />
+						<wz:property qualifier="marketplace" />
+						<wz:property qualifier="baseStore" />
+					</wz:property-list>
+				</wz:content>
+				<wz:navigation id="step1.navigation">
+					<wz:cancel />
+					<wz:done visible="!#empty(newSeller.name)">
+						<wz:save property="newSeller" />
+					</wz:done>
+				</wz:navigation>
+			</wz:step>
+		</wz:flow>
+	</context>
+
+	<context component="create-wizard" type="MarketplaceStore">
+		<wz:flow xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config" id="MarketplaceStoreWizard" title="create.title(ctx.TYPE_CODE)">
+			<wz:prepare id="groupPrepare">
+				<wz:initialize property="newStore" type="ctx.TYPE_CODE" />
+			</wz:prepare>
+			<wz:step id="step1" label="create.marketplacestore.essential.label">
+				<wz:content id="step1.content">
+					<wz:property-list root="newStore">
+						<wz:property qualifier="name" type="java.lang.String" />
+						<wz:property qualifier="marketplaceSeller" />
+						<wz:property qualifier="catalogVersion">
+							<wz:editor-parameter>
+								<wz:name>referenceSearchCondition_version_equals</wz:name>
+								<wz:value>Online</wz:value>
+							</wz:editor-parameter>
+						</wz:property>
+						<wz:property qualifier="url" />
+						<wz:property qualifier="defaultReturnAddress" />
+							<wz:editor-parameter>
+								<wz:name>referenceSearchCondition_addresstype_equals</wz:name>
+								<wz:value>Seller</wz:value>
+							</wz:editor-parameter>
+					</wz:property-list>
+				</wz:content>
+				<wz:navigation id="step1.navigation">
+					<wz:cancel />
+					<wz:done visible="!#empty(newStore.name) and newStore.marketplaceSeller != null">
+						<wz:save property="newStore" />
+					</wz:done>
+				</wz:navigation>
+			</wz:step>
+		</wz:flow>
+	</context>
+
+
+	<!-- node base -->
+	<context merge-by="type" parent="GenericItem" type="Marketplace" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceStore" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceSeller" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>pk + ' ' + name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="TmallOrderStatus" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="TmallOrderType" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceLog" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>objecttype + ' ' + objectid + ' ' + actionstatus.name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceStatus" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MessageSource" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<!-- node list view -->
+
+	<context type="Marketplace" component="listview">
+		<list:list-view xmlns:list="http://www.hybris.com/cockpitng/component/listView">
+			<list:column qualifier="code" />
+			<list:column qualifier="name" />
+			<list:column qualifier="url" />
+			<list:column qualifier="adapterUrl" />
+		</list:list-view>
+	</context>
+
+	<context type="MarketplaceSeller" component="listview">
+		<list:list-view xmlns:list="http://www.hybris.com/cockpitng/component/listView">
+			<list:column qualifier="name" />
+			<list:column qualifier="marketplace" />
+			<list:column qualifier="baseStore" />
+		</list:list-view>
+	</context>
+
+	<context type="MarketplaceStore" component="listview">
+		<list:list-view xmlns:list="http://www.hybris.com/cockpitng/component/listView">
+			<list:column qualifier="name" />
+			<list:column qualifier="marketplaceSeller" />
+			<list:column qualifier="catalogVersion" />
+			<list:column qualifier="url" />
+		</list:list-view>
+	</context>
+
+	<context type="MarketplaceLog" component="listview">
+		<list-view:list-view>
+			<list-view:column qualifier="marketplace" />
+			<list-view:column qualifier="modifiedtime" />
+			<list-view:column qualifier="action" />
+			<list-view:column qualifier="actionstatus" />
+			<list-view:column qualifier="objectid" />
+			<list-view:column qualifier="objecttype" />
+			<list-view:column qualifier="messagesource" />
+			<list-view:column qualifier="message" />
+		</list-view:list-view>
+	</context>
+
+	<!-- node search policy(simple) -->
+	<context merge-by="type" parent="GenericItem" type="Marketplace" component="simple-search">
+		<simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+			<simple-search:field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="name" />
+		</simple-search:simple-search>
+	</context>
+	<context merge-by="type" parent="GenericItem" type="MarketplaceSeller" component="simple-search">
+		<simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+			<simple-search:field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="name" />
+		</simple-search:simple-search>
+	</context>
+	<context merge-by="type" parent="GenericItem" type="MarketplaceStore" component="simple-search">
+		<simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+			<simple-search:field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="name" />
+		</simple-search:simple-search>
+	</context>
+	<context merge-by="type" parent="GenericItem" type="MarketplaceLog" component="simple-search">
+		<simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+			<simple-search:field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="objecttype" />
+		</simple-search:simple-search>
+	</context>
+
+
+	<!-- node search policy(advanced) -->
+	<context type="Marketplace" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:sort-field name="name" asc="false" />
+			<as:field-list>
+				<as:field name="url" operator="contains" selected="true" />
+				<as:field name="adapterUrl" operator="contains" selected="true" />
+				<as:field name="name" operator="like" selected="true" />
+				<as:field name="tmallOrderStatus" operator="contains" selected="true" />
+				<as:field editor="java.lang.Long" name="pk" operator="equal" selected="false" sortable="false" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+
+	<context type="MarketplaceSeller" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:sort-field name="name" asc="false" />
+			<as:field-list>
+				<as:field name="marketplace" operator="equal" selected="true" />
+				<as:field name="baseStore" operator="equal" selected="false" />
+				<as:field name="marketplaceStores" operator="equal" selected="false" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+
+	<context type="MarketplaceStore" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:sort-field name="name" asc="false" />
+			<as:field-list>
+				<as:field name="name" operator="contains" selected="true" />
+				<as:field name="orderStartTime" operator="contains" selected="false" />
+				<as:field name="orderEndTime" operator="contains" selected="false" />
+				<as:field name="marketplace" operator="equal" selected="false" />
+				<as:field name="baseStore" operator="equal" selected="false" />
+				<as:field name="currency" operator="equal" selected="false" />
+				<as:field name="url" operator="contains" selected="false" />
+				<as:field editor="java.lang.Long" name="pk" operator="equal" selected="false" sortable="false" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+	<context type="MarketplaceLog" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:sort-field name="modifiedtime" asc="false" />
+			<as:field-list>
+				<as:field name="actionstatus" operator="contains" selected="true" />
+				<as:field name="marketplace" operator="contains" selected="true" />
+				<as:field name="objecttype" operator="contains" selected="true" />
+				<as:field name="modifiedtime" operator="greater" selected="true" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+
+
+	<context type="MarketplaceOrder" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:field-list>
+				<as:field name="isCompleted" operator="equal" selected="false" />
+				<as:field name="marketplaceStore" operator="startsWith" selected="false" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+
+	<context type="TmallOrder" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:field-list>
+				<as:field name="tmallOrderId" operator="startsWith" selected="false" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+
+	<context type="TmallOrderEntry" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:field-list>
+				<as:field name="oid" operator="startsWith" selected="false" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+
+	<!-- node editor-area -->
+	<context merge-by="type" parent="GenericItem" type="Marketplace" component="editor-area">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="backoffice.tab.marketplace.properties">
+				<editorArea:section name="backoffice.section.marketplacestore.section.blank" columns="1">
+					<editorArea:panel>
+						<editorArea:attribute qualifier="code" />
+						<!-- updated by Wallace to remove the value changed check widgets -->
+						<editorArea:attribute qualifier="name" />
+						<!-- editorArea:attribute qualifier="name" editor="com.hybris.cockpitng.editor.namechangedchecktext"/ -->
+						<editorArea:attribute qualifier="url" />
+						<!-- editorArea:attribute qualifier="url" editor="com.hybris.cockpitng.editor.valuechangedchecktext"/ -->
+						<editorArea:attribute qualifier="adapterUrl" />
+						<editorArea:attribute qualifier="tmallOrderStatus" />
+						<editorArea:attribute qualifier="timezone" />
+					</editorArea:panel>
+				</editorArea:section>
+			</editorArea:tab>
+			<!-- <editorArea:tab name="backoffice.tab.marketplace.carrier"> <editorArea:section name="backoffice.section.marketplace.carrier"> 
+				<editorArea:attribute xmlns="http://www.hybris.com/cockpitng/component/editorArea" editor="com.hybris.cockpitng.editor.extendedmultireferenceeditor" 
+				qualifier="marketplaceCarrier"> <editorArea:editor-parameter> <editorArea:name>listConfigContext</editorArea:name> <editorArea:value>referenceListView</editorArea:value> 
+				</editorArea:editor-parameter> </editorArea:attribute> </editorArea:section> </editorArea:tab> -->
+		</editorArea:editorArea>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceSeller" component="editor-area">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="backoffice.tab.marketplaceseller.properties">
+				<editorArea:section name="backoffice.section.marketplacestore.section.blank">
+					<editorArea:attribute qualifier="name" />
+					<editorArea:attribute qualifier="marketplace" />
+					<editorArea:attribute qualifier="marketplaceStores" />
+					<editorArea:attribute qualifier="baseStore" />
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceStore" component="editor-area">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="backoffice.tab.marketplacestore.common.properties">
+				<editorArea:section name="backoffice.section.marketplacestore.section.blank" columns="1">
+					<editorArea:panel>
+						<editorArea:attribute qualifier="pk" />
+					<!-- updated by Wallace to remove the value changed check widgets -->
+					<!-- editorArea:attribute qualifier="name" editor="com.hybris.cockpitng.editor.valuechangedchecktext"/ -->
+						<editorArea:attribute qualifier="name" />
+						<editorArea:attribute qualifier="basestore" readonly="true" />
+						<editorArea:attribute qualifier="marketplace" readonly="true" />
+						<editorArea:attribute qualifier="marketplaceSeller" readonly="true" />
+						<editorArea:attribute qualifier="url" />
+						<editorArea:attribute qualifier="currency" readonly="true">
+							<editorArea:editor-parameter>
+								<editorArea:name>referenceSearchCondition_isocode_equals</editorArea:name>
+								<editorArea:value>CNY</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+						<editorArea:attribute qualifier="catalogVersion">
+							<editorArea:editor-parameter>
+								<editorArea:name>referenceSearchCondition_version_equals</editorArea:name>
+								<editorArea:value>Online</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+						<editorArea:attribute qualifier="defaultReturnAddress">
+							<editorArea:editor-parameter>
+								<editorArea:name>referenceSearchCondition_addresstype_equals</editorArea:name>
+								<editorArea:value>Seller</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+					</editorArea:panel>
+				</editorArea:section>
+			</editorArea:tab>
+
+			<editorArea:tab name="backoffice.tab.marketplacestore.authorize.parameters">
+				<editorArea:section name="backoffice.essentials" columns="1">
+					<editorArea:attribute qualifier="integrationId" readonly="true" />
+					<editorArea:attribute qualifier="authorized" readonly="true" />
+					<editorArea:customPanel name="InitAuth" spring-bean="marketplaceAuthInitRenderer">
+						<render-parameter>
+							<name>dataModelProperty</name>
+							<value>currentObject</value>
+						</render-parameter>
+					</editorArea:customPanel>
+				</editorArea:section>
+			</editorArea:tab>
+
+			<editorArea:tab name="backoffice.tab.marketplacestore.order.management">
+				<editorArea:section name="backoffice.section.marketplacestore.initial" columns="1">
+					<editorArea:panel>
+						<editorArea:attribute qualifier="orderStartTime" editor="com.hybris.cockpitng.editor.defaultdate">
+							<editorArea:editor-parameter>
+								<editorArea:name>dateFormat</editorArea:name>
+								<editorArea:value>dd/MM/yyyy</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+						<editorArea:attribute qualifier="orderEndTime" editor="com.hybris.cockpitng.editor.defaultdate">
+							<editorArea:editor-parameter>
+								<editorArea:name>dateFormat</editorArea:name>
+								<editorArea:value>dd/MM/yyyy</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+					</editorArea:panel>
+					<editorArea:customPanel name="InitOrder" spring-bean="marketplaceOrderInitialRenderer">
+						<render-parameter>
+							<name>dataModelProperty</name>
+							<value>currentObject</value>
+						</render-parameter>
+					</editorArea:customPanel>
+				</editorArea:section>
+				<editorArea:section name="backoffice.section.marketplacestore.order.request" columns="1">
+					<editorArea:panel>
+						<editorArea:attribute qualifier="requestStartTime" editor="com.hybris.cockpitng.editor.defaultdate">
+							<editorArea:editor-parameter>
+								<editorArea:name>dateFormat</editorArea:name>
+								<editorArea:value>dd/MM/yyyy</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+						<editorArea:attribute qualifier="requestEndTime" editor="com.hybris.cockpitng.editor.defaultdate">
+							<editorArea:editor-parameter>
+								<editorArea:name>dateFormat</editorArea:name>
+								<editorArea:value>dd/MM/yyyy</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+					</editorArea:panel>
+					<editorArea:customPanel name="OrderRequest" spring-bean="marketplaceOrderRequestRenderer">
+						<render-parameter>
+							<name>dataModelProperty</name>
+							<value>currentObject</value>
+						</render-parameter>
+					</editorArea:customPanel>
+				</editorArea:section>
+				<editorArea:section name="backoffice.section.marketplacestore.incremental">
+					<editorArea:customPanel name="Order" spring-bean="marketplaceOrderIncrementalRenderer">
+						<render-parameter>
+							<name>dataModelProperty</name>
+							<value>currentObject</value>
+						</render-parameter>
+					</editorArea:customPanel>
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+	<context merge-by="type" parent="GenericItem" type="MarketplaceLog" component="editor-area">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="backoffice.tab.marketplaceseller.properties">
+				<editorArea:section name="backoffice.section.marketplacestore.section.blank">
+					<editorArea:attribute qualifier="actionstatus" readonly="true" />
+					<editorArea:attribute qualifier="marketplace" readonly="true" />
+					<editorArea:attribute qualifier="targetobject" readonly="true" />
+					<editorArea:attribute qualifier="objecttype" readonly="true" />
+					<editorArea:attribute qualifier="objectid" readonly="true" />
+					<editorArea:attribute qualifier="subobjectid" readonly="true" />
+					<editorArea:attribute qualifier="action" readonly="true" />
+					<editorArea:attribute qualifier="modifiedtime" readonly="true" />
+					<editorArea:attribute qualifier="message" readonly="true" />
+					<editorArea:attribute qualifier="messagesource" readonly="true" />
+					<editorArea:attribute qualifier="marketplaceloghistory" readonly="true" />
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context type="MarketplaceCarrier" component="referenceListView">
+		<list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+			<list-view:column qualifier="id" />
+			<list-view:column qualifier="code" />
+			<list-view:column qualifier="name" />
+			<list-view:column qualifier="marketplace" />
+		</list-view:list-view>
+	</context>
+
+</config>

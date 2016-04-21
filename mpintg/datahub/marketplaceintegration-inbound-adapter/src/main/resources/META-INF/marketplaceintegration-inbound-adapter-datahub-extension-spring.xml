@@ -1,0 +1,199 @@
+<!-- ~ [y] hybris Platform ~ ~ Copyright (c) 2000-2016 hybris AG ~ All rights reserved. ~ ~ This software is the confidential and proprietary 
+	information of hybris ~ ("Confidential Information"). You shall not disclose such Confidential ~ Information and shall use it only 
+	in accordance with the terms of the ~ license agreement you entered into with hybris. -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean name="marketplaceIntegrationAuthResource" class="com.hybris.datahub.rest.resources.MarketplaceIntegrationAuthResource"
+		init-method="initialize">
+		<property name="marketplaceIntegrationFacade" ref="marketplaceIntegrationFacade" />
+	</bean>
+
+	<bean name="marketplaceIntegrationTradeResource" class="com.hybris.datahub.rest.resources.MarketplaceIntegrationTradeResource"
+		init-method="initialize">
+		<property name="marketplaceIntegrationFacade" ref="marketplaceIntegrationFacade" />
+	</bean>
+
+	<bean name="marketplaceIntegrationProductResource" class="com.hybris.datahub.rest.resources.MarketplaceIntegrationProductResource"
+		init-method="initialize">
+		<property name="marketplaceIntegrationFacade" ref="marketplaceIntegrationFacade" />
+	</bean>
+
+	<bean name="marketplaceIntegrationLogisticsResource" class="com.hybris.datahub.rest.resources.MarketplaceIntegrationLogisticsResource"
+		init-method="initialize">
+		<property name="marketplaceIntegrationFacade" ref="marketplaceIntegrationFacade" />
+	</bean>
+
+	<bean name="marketplaceIntegrationRefundResource" class="com.hybris.datahub.rest.resources.MarketplaceIntegrationRefundResource"
+		init-method="initialize">
+		<property name="marketplaceIntegrationFacade" ref="marketplaceIntegrationFacade" />
+	</bean>
+	
+	<bean name="marketplaceIntegrationLogResource" class="com.hybris.datahub.rest.resources.MarketplaceIntegrationLogResource"
+		init-method="initialize">
+		<property name="marketplaceIntegrationFacade" ref="marketplaceIntegrationFacade" />
+	</bean>
+	
+	<bean name="jsonService" class="com.hybris.datahub.service.impl.DefaultJsonService" />
+
+	<bean name="marketplaceIntegrationService" class="com.hybris.datahub.service.impl.DefaultMarketplaceIntegrationService">
+		<property name="itemFeedMap">
+			<map>
+				<entry key="DEFAULT_FEED" value="DEFAULT_FEED" />
+				<entry key="MarketplaceLogRawItem" value="MARKETPLACE_LOG_FEED" />
+			</map>
+		</property>
+		<property name="rawFragmentInputChannel" ref="rawFragmentMessageInputChannel" />
+	</bean>
+
+	<bean name="marketplaceIntegrationFacade" class="com.hybris.datahub.facade.impl.DefaultMarketplaceIntegrationFacade">
+		<property name="marketplaceIntegrationHandlers">
+			<map>
+				<entry key="auth/tmall-auth" value-ref="marketplaceIntegrationTmallAuthHandler" />
+				<entry key="trade/tmall-trades" value-ref="marketplaceIntegrationTmallTradesHandler" />
+				<entry key="refund/tmall-refunds" value-ref="marketplaceIntegrationTmallRefundTradesHandler" />
+				<entry key="product/tmall-product-list" value-ref="marketplaceIntegrationTmallProductListHandler" />
+				<entry key="product/tmall-product-delist" value-ref="marketplaceIntegrationTmallProductDeListHandler" />
+				<entry key="logistics/tmall-logistics-consignment" value-ref="marketplaceIntegrationOrderConsignmentHandler" />
+				<entry key="log/marketplace-log" value-ref="marketplaceIntegrationMarketplaceLogHandler" />
+				<entry key="refund/tmall-refuse" value-ref="marketplaceIntegrationRefundRefuseHandler" />
+				<entry key="refund/tmall-agree" value-ref="marketplaceIntegrationRefundsAgreeHandler" />
+				<entry key="refund/tmall-returngoods-refuse" value-ref="marketplaceIntegrationReturngoodsRefuseHandler" />
+				<entry key="refund/tmall-returngoods-agree" value-ref="marketplaceIntegrationReturngoodsAgreeHandler" />
+			</map>
+		</property>
+	</bean>
+	<bean name="marketplaceIntegrationReturngoodsRefuseHandler" class="com.hybris.datahub.service.impl.handler.DefaultJsonHandler">
+		<property name="rawItemType" value="ReturngoodsRefuseRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationReturngoodsAgreeHandler" class="com.hybris.datahub.service.impl.handler.DefaultJsonHandler">
+		<property name="rawItemType" value="ReturngoodsAgreeRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationRefundRefuseHandler" class="com.hybris.datahub.service.impl.handler.DefaultJsonHandler">
+		<property name="rawItemType" value="RefundRefuseRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationRefundsAgreeHandler" class="com.hybris.datahub.service.impl.handler.DefaultJsonHandler">
+		<property name="rawItemType" value="RefundsAgreeRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationTmallProductListHandler" class="com.hybris.datahub.service.impl.handler.DefaultTmallProductListHandler">
+		<property name="rawItemType" value="TmallProductListingRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationTmallProductDeListHandler" class="com.hybris.datahub.service.impl.handler.DefaultTmallProductDelistHandler">
+		<property name="rawItemType" value="TmallProductDelistingRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationTmallAuthHandler" class="com.hybris.datahub.service.impl.handler.DefaultJsonHandler">
+		<property name="rawItemType" value="TmallAuthRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationMarketplaceLogHandler" class="com.hybris.datahub.service.impl.handler.DefaultJsonHandler">
+		<property name="rawItemType" value="MarketplaceLogRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+	<bean name="marketplaceIntegrationOrderConsignmentHandler" class="com.hybris.datahub.service.impl.handler.DefaultTmallLogisticsHandler">
+		<property name="rawItemType" value="OrderConsignmentRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+
+	<bean name="marketplaceIntegrationTmallRefundTradesHandler" class="com.hybris.datahub.service.impl.handler.DefaultTmallRefundTradesHandler">
+		<property name="rawItemType" value="OrderRefundRawItem" />
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+		<property name="refundTypeDefault" value="Unknown" />
+		<property name="refundTypes">
+			<map>
+				<entry key="false" value="REFUND_ONLY" />
+				<entry key="true" value="RETURN_REFUND" />
+			</map>
+		</property>	
+		<property name="refundStatusDefault" value="Unknown" />
+		<property name="refundStatuses">
+			<map>
+				
+				<entry key="WAIT_SELLER_AGREE" value="Awaiting_Approval" />
+				<entry key="WAIT_BUYER_RETURN_GOODS" value="Awaiting_Goods_Return" />
+				<entry key="WAIT_SELLER_CONFIRM_GOODS" value="Awaiting_Return_Confirmation" />
+				<entry key="SELLER_REFUSE_BUYER" value="Rejected_by_seller" />
+				<entry key="CLOSED" value="Closed_by_customer" />
+				<entry key="SUCCESS" value="Completed" />	 									
+			</map>
+		</property>			
+	</bean>
+	
+	<bean name="marketplaceIntegrationTmallTradesHandler" class="com.hybris.datahub.service.impl.handler.DefaultTmallTradesHandler">
+		<property name="rawItemTypes">
+			<map>
+				<entry key="tmallTrade" value="TmallTradeRawItem" />
+				<entry key="tmallOrder" value="TmallOrderRawItem" />
+			</map>
+		</property>
+		<property name="orderStatusDefault" value="Created" />
+<!-- 		<property name="orderStatuses"> -->
+<!-- 			<map> -->
+<!-- 				<entry key="TRADE_NO_CREATE_PAY" value="CREATED" /> -->
+<!-- 				<entry key="WAIT_BUYER_PAY" value="AWAITING_PAYMENT" /> -->
+<!-- 				<entry key="WAIT_SELLER_SEND_GOODS" value="READY" /> -->
+<!-- 				<entry key="WAIT_BUYER_CONFIRM_GOODS" value="COMPLETED" /> -->
+<!-- 				<entry key="TRADE_BUYER_SIGNED" value="COMPLETED" /> -->
+<!-- 				<entry key="TRADE_FINISHED" value="COMPLETED" /> -->
+<!-- 				<entry key="TRADE_CLOSED" value="COMPLETED" /> -->
+<!-- 				<entry key="TRADE_CLOSED_BY_TAOBAO" value="CANCELLED" /> -->
+<!-- 				<entry key="SELLER_CONSIGNED_PART" value="READY" /> -->
+<!-- 			</map> -->
+<!-- 		</property> -->
+		<property name="orderCountryDefault" value="CN" />
+		<property name="orderCountries">
+			<map>
+				<entry key="中国" value="CN" />
+			</map>
+		</property>
+		<property name="orderStatusesToPaymentStatuses">
+			<map>
+				<entry key="TRADE_NO_CREATE_PAY" value="NOTPAID" />
+				<entry key="WAIT_BUYER_PAY" value="NOTPAID" />
+				<entry key="SELLER_CONSIGNED_PART" value="PAID" />
+				<entry key="WAIT_SELLER_SEND_GOODS" value="PAID" />
+				<entry key="WAIT_BUYER_CONFIRM_GOODS" value="PAID" />
+				<entry key="TRADE_BUYER_SIGNED" value="PAID" />
+				<entry key="TRADE_FINISHED" value="PAID" />
+				<entry key="TRADE_CLOSED" value="" />
+				<entry key="TRADE_CLOSED_BY_TAOBAO" value="" />
+			</map>
+		</property>
+		<property name="defaultValues">
+			<map>
+				<entry key="latestTransactionType" value="NOTIFY" />
+				<entry key="paymentProvider" value="Alipay" />
+				<entry key="loginDisabled" value="true" />
+				<entry key="billingAddress" value="false" />
+				<entry key="shippingAddress" value="true" />
+				<entry key="promotionMatcher" value="1" />
+				<entry key="unit" value="pieces" />
+				<entry key="transactionStatus" value="NOTIFY_AFTER_PAYMENT" />
+				<entry key="transactionStatusDetails" value="Asynchronized call back from Alipay on the payment, trade_status=%s" />
+				<entry key="notifyType" value="trade_status_sync" />
+				<entry key="paymentMode" value="alipay" />
+				<entry key="paymentStatusPaid" value="PAID" />
+				<entry key="paymentStatusNotPaid" value="NOTPAID" />
+			</map>
+		</property>
+		<property name="jsonService" ref="jsonService" />
+		<property name="marketplaceIntegrationService" ref="marketplaceIntegrationService" />
+	</bean>
+
+</beans>

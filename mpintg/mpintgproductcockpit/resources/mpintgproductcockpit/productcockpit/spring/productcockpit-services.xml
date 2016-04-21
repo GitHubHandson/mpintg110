@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2016 hybris AG All rights reserved. 
+	This software is the confidential and proprietary information of hybris ("Confidential 
+	Information"). You shall not disclose such Confidential Information and shall 
+	use it only in accordance with the terms of the license agreement you entered 
+	into with hybris. -->
+
+
+<!-- . WARNING: This is the CUSTOM Spring WEB configuration file used for 
+	cmscockpit . web application. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd"
+	default-autowire="byName">
+	
+	<!-- alias alias="synchronizationService" name="accSynchronizationService" />
+	<bean id="accSynchronizationService" class="com.sap.acc.cockpit.cmscockpit.services.impl.SynchronizationServiceImpl" parent="defaultSynchronizationService">
+	<bean id="accSynchronizationService" class="de.hybris.platform.cockpit.services.sync.impl.SynchronizationServiceImpl" parent="defaultSynchronizationService">
+	
+		<property name="relatedReferencesTypesMap">
+			<map merge="true">
+				<entry key="Product">
+					<list>
+						<value>Product.productImages</value>
+					</list>
+				</entry>
+				<entry key="MediaContainer">
+					<list>
+						<value>MediaContainer.medias</value>
+					</list>
+				</entry>
+			</map>
+		</property>
+	</bean-->
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="ignoreResourceNotFound" value="true" />
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:project.properties</value> 
+			</list>
+		</property>
+	</bean>
+
+ <!-- <bean id="productStockDao" class="de.hybris.platform.mpintgproductcockpit.cmscockpit.dao.impl.ProductStockDaoImpl"/> -->
+ 	
+	
+<alias alias="synchronizationService" name="dummyCustomerSynchronizationService" />
+
+<bean id="dummyCustomerSynchronizationService" class="de.hybris.platform.mpintgproductcockpit.productcockpit.services.impl.ProductListingSynchronizationServiceImpl" scope="tenant">
+
+    <property name="synchronizationServiceDao" ref="synchronizationServiceDao" />
+
+    <property name="platformTypeService" ref="defaultTypeService" />
+    
+    <property name="requestUrl" value="${datahub.request.url}" />
+    
+</bean>
+	<alias name="marketplaceintegrationbackofficehttputilimpl" alias="marketplaceHttpUtil" />
+	<bean id="marketplaceintegrationbackofficehttputilimpl" class="de.hybris.platform.mpintgproductcockpit.productcockpit.util.impl.MarketplaceintegrationHttpUtilImpl">
+		<property name="httpHeaders">
+			<map>
+				<entry key="Content-Type" value="application/json" />
+			</map>
+		</property>
+		<property name="baseAuthUser">
+			<value>${auth.baseAuthUser}</value>
+		</property>
+		<property name="baseAuthPassword">
+			<value>${auth.baseAuthPassword}</value>
+		</property>
+	</bean>
+<!-- <alias alias="productStockService" name="productStockService" />
+
+<bean id="productStockService" class="de.hybris.platform.mpintgproductcockpit.cmscockpit.services.impl.ProductStockServiceImpl" scope="tenant">
+
+
+</bean> -->
+	
+</beans>

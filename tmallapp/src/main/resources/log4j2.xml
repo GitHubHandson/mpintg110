@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="trace" monitorInterval="1800">
+  		<properties>
+      	<property name="LOG_HOME">${sys:user.home}/tmallapp</property>
+    	</properties>
+ 
+     	<Appenders>
+         <Console name="console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %logger{36} - %msg%n" />
+         </Console>
+
+       	<RollingFile name="running-trace"
+             fileName="${LOG_HOME}/trace.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/trace-%d{yyyy-MM-dd}-%i.log">
+             <Filters>
+                <ThresholdFilter level="TRACE"/>
+                <ThresholdFilter level="DEBUG" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout
+                 pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="20 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="2" />
+        </RollingFile>
+        <RollingFile name="running-info"
+             fileName="${LOG_HOME}/info.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+             <Filters>
+                <ThresholdFilter level="INFO"/>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout
+                 pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="20 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="2" />
+        </RollingFile>
+        <RollingFile name="running-error"
+             fileName="${LOG_HOME}/error.log" filePattern="${LOG_HOME}/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            
+            <Filters>
+                <ThresholdFilter level="ERROR"/>
+            </Filters>
+            
+            <PatternLayout
+                 pattern="%date{yyyy-MM-dd HH:mm:ss} %level [%thread][%file:%line] - %msg%n" />
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="24"/>
+                <SizeBasedTriggeringPolicy size="20 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="2" />
+        </RollingFile>
+    	</Appenders>
+     
+     	<Loggers>
+         <logger name="org.springframework" level="INFO"></logger>
+         
+         <Root level="all">
+             <AppenderRef ref="console" />
+             <AppenderRef ref="running-trace" />
+             <AppenderRef ref="running-info" />
+             <AppenderRef ref="running-error" />
+         </Root>
+   	</Loggers>
+</Configuration>

@@ -1,0 +1,20 @@
+package com.sap.acc.cockpit.cmscockpit.dao;
+
+import de.hybris.platform.core.PK;
+import de.hybris.platform.core.model.product.ProductModel;
+import de.hybris.platform.ordersplitting.model.StockLevelModel;
+
+public interface productStockDao {
+	ProductModel getProductById(String productId);
+	
+	ProductModel getProductByPK(String productPK);
+	
+<<<<<<< Updated upstream
+	ProductModel getProductbyPK(String PK);
+
+=======
+>>>>>>> Stashed changes
+	StockLevelModel getStockLevel(PK warehouse, String productId);
+	
+	String getIntegrationIdByBasestore(String baseStorePK);
+}

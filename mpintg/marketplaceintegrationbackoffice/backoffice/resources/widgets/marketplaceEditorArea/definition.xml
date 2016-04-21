@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+
+<widget-definition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widget-definition.xsd"
+                   id="com.hybris.cockpitng.backoffice.marketplaceEditorArea">
+    <name>Marketplace Extend Editor Area</name>
+    <description>Marketplace Extend Editor Area</description>
+    <defaultTitle>Marketplace Extend Editor Area</defaultTitle>
+    <author>hybris</author>
+    <version>1.0</version>
+
+    <view src="marketplaceEditorArea.zul"/>
+    <controller class="de.hybris.platform.marketplaceintegrationbackoffice.widgets.MarketplaceEditorAreaController"/>
+
+    <sockets>
+        <input id="resize" type="java.util.Map"/>
+        <input id="reset" type="java.util.Map"/>
+        <input id="inputObject" type="java.lang.Object"/>
+        <output id="objectSaved" type="java.lang.Object"/>
+        <output id="widgetTitle" type="java.lang.String"/>
+    </sockets>
+
+    <keywords>
+        <keyword>Data Manipulation</keyword>
+    </keywords>
+
+    <settings>
+        <setting key="editorAreaConfigCtx" default-value="editor-area" type="String"/>
+        <setting key="actionSlotComponentId" default-value="editorareaactions" type="String"/>
+        <setting key="bottomToolbar" default-value="false" type="Boolean"/>
+        <setting key="initViewMode" type="String" default-value="fluid"/>
+        <setting key="fluidViewCode" type="String" default-value="fluid"/>
+        <setting key="viewModeBtnVisible" type="Boolean" default-value="false"/>
+        <setting key="toolbarDisabled" type="Boolean" default-value="false"/>
+        <setting key="enableEmbededTitle" type="Boolean" default-value="false"/>
+        <setting key="accordionMold" type="Boolean" default-value="false"/>
+        <setting key="showLinksInNotifications" type="Boolean" default-value="true"/>
+    </settings>
+</widget-definition>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="mpintgomsbackofficeService" class="de.hybris.platform.mpintgomsbackoffice.services.MpintgomsbackofficeService" />
+
+	<bean id="mpintgomsbackofficeLabelLocator" class="com.hybris.cockpitng.util.labels.ResourcesLabelLocator" scope="singleton" init-method="init" lazy-init="false">
+  		<property name="location" value="/mpintgomsbackoffice-backoffice-labels/"/>
+  		<property name="name" value="labels"/>
+  	</bean>
+	
+	<bean id="tmallNestedAttributePanelRenderer" class="de.hybris.platform.omsbackoffice.renderers.NestedAttributePanelRenderer" parent="editorAreaPanelRenderer">
+        <property name="typeFacade" ref="typeFacade"/>
+        <property name="nestedAttributeUtils" ref="nestedAttributeUtils" />
+    </bean>
+    
+	<bean id="getVerifyCodeRenderer" class="de.hybris.platform.mpintgomsbackoffice.renderer.GetVerifyCodeRenderer"
+		scope="prototype">
+		<property name="attributeDescriptionIconRenderer" ref="attributeDescriptionIconRenderer" />
+		<property name="objectFacade" ref="objectFacade" />
+		<property name="modelService" ref="modelService" />
+		<property name="cockpitLocaleService" ref="cockpitLocaleService" />
+		<property name="cockpitUserService" ref="cockpitUserService" />
+		<property name="labelService" ref="labelService" />
+		<property name="permissionFacade" ref="permissionFacade" />
+		<property name="propertyValueService" ref="propertyValueService" />
+		<property name="cockpitProperties" ref="cockpitProperties" />
+		<property name="permissionFacadeStrategy" ref="defaultPermissionFacadeStrategy" />
+		<property name="widgetRenderingUtils" ref="widgetRenderingUtils" />
+		<!-- <property name="marketplaceHttpUtil" ref="marketplaceHttpUtil" /> -->
+	</bean>
+    
+</beans>

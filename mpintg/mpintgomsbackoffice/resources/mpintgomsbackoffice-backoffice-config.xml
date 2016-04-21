@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!-- ~ [y] hybris Platform ~ ~ Copyright (c) 2000-2016 hybris AG ~ All rights reserved. ~ ~ This software is the confidential and proprietary 
+	information of hybris ~ ("Confidential Information"). You shall not disclose such Confidential ~ Information and shall use it only 
+	in accordance with the terms of the ~ license agreement you entered into with hybris. -->
+
+<config xmlns="http://www.hybris.com/cockpit/config" xmlns:y="http://www.hybris.com/cockpit/config/hybris" xmlns:wz="http://www.hybris.com/cockpitng/config/wizard-config"
+	xmlns:ysl="http://www.hybris.com/cockpitng/config/simplelist" xmlns:list-view="http://www.hybris.com/cockpitng/component/listView"
+	xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea" xmlns:explorer-tree="http://www.hybris.com/cockpitng/config/explorertree"
+	xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch" xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch"
+	xmlns:df="http://www.hybris.com/cockpitng/component/dynamicForms">
+
+	<!-- explorer-tree& node -->
+	<context component="oms-explorer-tree" merge-by="module">
+		<n:explorer-tree xmlns:n="http://www.hybris.com/cockpitng/config/explorertree">
+			<n:navigation-node id="ordermanagementbackoffice.treenode.requests">
+				<n:type-node id="ordermanagementbackoffice.typenode.request.open" />
+				<n:type-node id="ordermanagementbackoffice.typenode.request.all" code="TmallRefundRequest" />
+			</n:navigation-node>
+		</n:explorer-tree>
+	</context>
+
+	<!--Simple Search -->
+	<context merge-by="type" parent="GenericItem" type="TmallRefundRequest" component="simple-search">
+		<simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+			<field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="refundId" />
+		</simple-search:simple-search>
+	</context>
+
+    <context merge-by="type" parent="GenericItem" type="StandardCarrier" component="simple-search">
+    	<simple-search:simple-search xmlns:simple-search="http://www.hybris.com/cockpitng/config/simplesearch">
+        	<field xmlns="http://www.hybris.com/cockpitng/config/simplesearch" name="name" />
+        </simple-search:simple-search>
+    </context>
+
+
+	<!--Advanced Search -->	
+ 	<context type="MarketplaceRefundRequest" component="advanced-search">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:field-list>
+				<as:field name="marketplaceStore" operator="contains" selected="true" />
+				<as:field name="product" operator="contains" selected="true" />
+				<as:field name="customer" operator="contains" selected="true" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>
+			
+	<context type="TmallRefundRequest" component="advanced-search" merge-by="type" parent="MarketplaceRefundRequest">
+		<as:advanced-search xmlns:as="http://www.hybris.com/cockpitng/config/advancedsearch" connection-operator="AND">
+			<as:field-list>
+				<as:field name="refundId" operator="contains" selected="true"/>
+				<as:field name="refundType" operator="contains" selected="true" />
+				<as:field name="refundStatus" operator="contains" selected="true" />
+				<as:field name="refundAction" operator="contains" selected="true" />
+			</as:field-list>
+		</as:advanced-search>
+	</context>	
+	
+	<context merge-by="type" parent="GenericItem" type="Consignment" component="advanced-search">
+		<advanced-search:advanced-search xmlns:advanced-search="http://www.hybris.com/cockpitng/config/advancedsearch">
+			<advanced-search:field-list>
+				<advanced-search:field xmlns="http://www.hybris.com/cockpitng/config/advancedsearch" name="marketplaceCarrier"
+					selected="false" />
+			</advanced-search:field-list>
+		</advanced-search:advanced-search>
+	</context>
+
+	<!-- node base -->
+	<context merge-by="type" parent="GenericItem" type="Marketplace" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="MarketplaceStore" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<!-- List View -->
+	<context type="TmallRefundRequest" component="omslistview">
+		<list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+			<list-view:column qualifier="marketplaceStore.name" label="mpintgbackoffice.requests.listview.marketplacestore" />
+			<list-view:column qualifier="TmallOrder.code" label="mpintgbackoffice.requests.listview.ordernumber" />
+			<list-view:column qualifier="refundType" label="mpintgbackoffice.requests.listview.refundtype" />
+			<list-view:column qualifier="refundReason" label="mpintgbackoffice.requests.listview.refundreason" />
+			<list-view:column qualifier="totalFee" label="mpintgbackoffice.requests.listview.totalfee" />
+			<list-view:column qualifier="refundFee" label="mpintgbackoffice.requests.listview.refundfee" />
+			<list-view:column qualifier="refundCreatedDate" label="mpintgbackoffice.requests.listview.createddate" />
+			<list-view:column qualifier="refundAction" label="mpintgbackoffice.requests.listview.action" />
+		</list-view:list-view>
+	</context>
+	
+	<context merge-by="type" type="Consignment" component="warehousingbackofficelistview">
+		<list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+			<list-view:column qualifier="order.marketplaceStore" label="mpintgbackoffice.consignments.listview.marketplacestore" />
+		</list-view:list-view>
+	</context>
+
+	<!-- Editor Area -->
+	<context merge-by="module" parent="GenericItem" type="TmallRefundRequest" component="oms-editor-area">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea"
+			hideTabNameIfOnlyOneVisible="false">
+			<editorArea:tab name="mpintgomsbackoffice.refund.tab.details">
+				<editorArea:section name="mpintgomsbackoffice.section.refund.verify.information" columns="1">
+					<editorArea:customPanel name="GetVerifyCode" spring-bean="getVerifyCodeRenderer">
+						<render-parameter>
+							<name>dataModelProperty</name>
+							<value>currentObject</value>
+						</render-parameter>
+					</editorArea:customPanel>
+					<editorArea:attribute qualifier="verifyCode" />
+				</editorArea:section>
+				<editorArea:section name="mpintgomsbackoffice.section.refund.general.information" columns="3">
+					<editorArea:customPanel name="mpintgomsbackoffice.refund.general.marketplacestore" spring-bean="tmallNestedAttributePanelRenderer">
+						<editorArea:attribute qualifier="marketplaceStore.marketplace" readonly="true" />
+					</editorArea:customPanel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundType" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundStatus" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="customer" label="mpintgomsbackoffice.refund.general.customer"
+							readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="tmallOrder" label="mpintgomsbackoffice.refund.general.tmallOrder"
+							readonly="true" />
+					</editorArea:panel>
+					<editorArea:customPanel name="mpintgomsbackoffice.refund.detail.deliverycost" spring-bean="tmallNestedAttributePanelRenderer">
+						<editorArea:attribute qualifier="tmallOrder.deliveryCost" readonly="true" />
+					</editorArea:customPanel>					
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundAction" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundId" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="returnAddress" />
+					</editorArea:panel>					
+				</editorArea:section>
+				<editorArea:section name="mpintgomsbackoffice.section.refund.indicator.information" columns="1">
+					<editorArea:panel>
+						<editorArea:attribute qualifier="waitMarketPlaceResponse" readonly="true" />
+					</editorArea:panel>
+				</editorArea:section>
+				<editorArea:section name="mpintgomsbackoffice.section.refund.detail.information" columns="3">
+					<editorArea:customPanel name="mpintgomsbackoffice.consignmentEntry.orderEntry.oid" spring-bean="tmallNestedAttributePanelRenderer">
+						<editorArea:attribute qualifier="tmallOrderEntry.oid" readonly="true" />
+					</editorArea:customPanel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="totalFee" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundFee" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="product" label="mpintgomsbackoffice.refund.general.product" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundCreatedDate" readonly="true" />
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundReason" readonly="true" />
+					</editorArea:panel>
+					<editorArea:customPanel name="mpintgomsbackoffice.refund.detail.consignment.status" spring-bean="tmallNestedAttributePanelRenderer">
+						<editorArea:attribute qualifier="consignment.status" label="mpintgomsbackoffice.refund.detail.consignment.status"
+							readonly="true" />
+					</editorArea:customPanel>	
+				</editorArea:section>
+				<editorArea:section name="mpintgomsbackoffice.section.refund.comments.information" columns="1">
+					<editorArea:panel>
+						<editorArea:attribute qualifier="refundComments">
+							<editorArea:editor-parameter>
+								<editorArea:name>rows</editorArea:name>
+								<editorArea:value>5</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+					</editorArea:panel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="returnRemark">
+						<editorArea:editor-parameter>
+								<editorArea:name>rows</editorArea:name>
+								<editorArea:value>5</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+					</editorArea:panel>
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+
+	<context merge-by="type" parent="GenericItem" type="Consignment" component="warehousingbackoffice-editor-area">
+		<editorArea:editorArea xmlns:editorArea="http://www.hybris.com/cockpitng/component/editorArea">
+			<editorArea:tab name="mpintgomsbackoffice.tab.marketplaceconsignment">
+				<editorArea:section name="mpintgomsbackoffice.section.tmallconsignment.dashboard">
+					<editorArea:customPanel name="mpintgomsbackoffice.consignment.tid" spring-bean="tmallNestedAttributePanelRenderer">
+						<editorArea:attribute qualifier="order.tmallOrderId" readonly="true" />
+					</editorArea:customPanel>
+					<editorArea:panel>
+						<editorArea:attribute qualifier="standardCarrier" label="mpintgomsbackoffice.consignment.carrier" />
+						<editorArea:attribute qualifier="marketplaceTrackingID" label="mpintgomsbackoffice.consignment.trackingID" />
+					</editorArea:panel>
+				</editorArea:section>
+				<editorArea:section name="mpintgomsbackoffice.section.tmallconsignment.entries">
+					<editorArea:panel>
+						<editorArea:attribute editor="com.hybris.cockpitng.editor.extendedmultireferenceeditor" qualifier="consignmentEntries"
+							readonly="true">
+							<editorArea:editor-parameter>
+								<editorArea:name>listConfigContext</editorArea:name>
+								<editorArea:value>referenceListViewTmallConsignmentEntries</editorArea:value>
+							</editorArea:editor-parameter>
+							<editorArea:editor-parameter>
+								<editorArea:name>disableDisplayingDetails</editorArea:name>
+								<editorArea:value>true</editorArea:value>
+							</editorArea:editor-parameter>
+							<editorArea:editor-parameter>
+								<editorArea:name>disableRemoveReference</editorArea:name>
+								<editorArea:value>true</editorArea:value>
+							</editorArea:editor-parameter>
+						</editorArea:attribute>
+					</editorArea:panel>
+				</editorArea:section>
+			</editorArea:tab>
+		</editorArea:editorArea>
+	</context>
+
+	<context merge-by="type" parent="GenericItem" type="ConsignmentEntry" component="referenceListViewTmallConsignmentEntries">
+		<list-view:list-view xmlns:list-view="http://www.hybris.com/cockpitng/component/listView">
+			<list-view:column qualifier="orderEntry.oid" label="mpintgomsbackoffice.consignmentEntry.orderEntry.oid"
+				spring-bean="nullSafeListCellRenderer" />
+			<list-view:column qualifier="orderEntry.product.code" label="warehousingbackoffice.consignmentEntry.orderEntry.product.code"
+				spring-bean="nullSafeListCellRenderer" />
+			<list-view:column qualifier="orderEntry.product.name" label="warehousingbackoffice.consignmentEntry.orderEntry.product.name"
+				spring-bean="nullSafeListCellRenderer" />
+			<list-view:column qualifier="orderEntry.refundStatus" label="mpintgomsbackoffice.consignmentEntry.orderEntry.refundStatus"
+				spring-bean="nullSafeListCellRenderer" />
+			<list-view:column qualifier="quantity" />
+			<list-view:column qualifier="orderEntry.waitMarketPlaceResponse" label="mpintgomsbackoffice.consignmentEntry.orderEntry.waitmarketplaceresponse"
+				spring-bean="nullSafeListCellRenderer" />
+		</list-view:list-view>
+	</context>
+
+	<context component="omsEditorAreaActions" type="TmallRefundRequest" merge-by="type">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:label>actiongroup.common</y:label>
+				<y:action action-id="de.hybris.mpintgomsbackoffice.actions.confirmreturnaction" property="currentObject" />
+				<y:action action-id="de.hybris.mpintgomsbackoffice.actions.approveaction" property="currentObject" />
+				<y:action action-id="de.hybris.mpintgomsbackoffice.actions.rejectaction" property="currentObject" />				
+			</y:group>
+		</y:actions>
+	</context>
+
+	<context type="Consignment" merge-by="type" component="warehouseEditorAreaActions">
+		<y:actions xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:group qualifier="common">
+				<y:label>actiongroup.common</y:label>
+				<y:action action-id="de.hybris.mpintgomsbackoffice.actions.syncaction" property="currentObject" />
+			</y:group>
+		</y:actions>
+	</context>
+
+
+	<context merge-by="type" parent="Consignment" type="StandardCarrier" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+
+	<context merge-by="type" type="Consignment" component="base">
+		<y:base xmlns:y="http://www.hybris.com/cockpit/config/hybris">
+			<y:labels>
+				<y:label>name</y:label>
+			</y:labels>
+		</y:base>
+	</context>
+</config>

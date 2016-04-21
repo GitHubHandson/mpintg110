@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--
+ [y] hybris Platform
+
+ Copyright (c) 2000-2016 hybris AG
+ All rights reserved.
+
+ This software is the confidential and proprietary information of hybris
+ ("Confidential Information"). You shall not disclose such Confidential
+ Information and shall use it only in accordance with the terms of the
+ license agreement you entered into with hybris.
+
+  
+-->
+<!--
+	ATTENTION: This is just an example file. You have to edit it according to your needs.
+-->
+
+<items 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+			xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<enumtypes>
+		<enumtype generate="true" code="ListingStatusEnum"
+			autocreate="true" dynamic="true">
+			<description>For a product, There are corresponding status to  indicate whether it is shelving or off-shelving in third party store.</description>
+			<value code="LISTING" />
+			<value code="DELISTING" />
+		</enumtype>
+	</enumtypes>
+	
+	<itemtypes>
+
+	
+	<itemtype code="Product" autocreate="false" generate="false">
+		<attributes>
+			<attribute type="ListingStatusEnum" qualifier="listingStatus"
+						autocreate="true">
+				<persistence type="property" />
+			    <defaultvalue>
+							 de.hybris.platform.mpintgproductcockpit.enums.ListingStatusEnum.DELISTING
+				</defaultvalue>
+				<description>This indicates whether the product shelves in third party store</description>
+			</attribute>
+	
+			<attribute qualifier="tmallOperationStartDate" type="java.util.Date">
+				<description>The exact date of shelving the product to the third party store</description>
+				<modifiers optional="true" />
+				<persistence type="property" />
+			</attribute> 
+			
+			<attribute qualifier="quantity" type="java.lang.Integer">
+				<description>The exact quantity of shelving the product to the third party store</description>
+				<modifiers optional="true" />
+				<persistence type="property" />
+			</attribute>
+			
+			<attribute qualifier="inStockQuanity" type="java.lang.Integer">
+				<description>The total available in stock quantity of the product in hybris</description>
+				<modifiers optional="true" />
+				<persistence type="property" />
+			</attribute>
+			
+			<attribute qualifier="tmallProductId" type="java.lang.String">
+				<description>The product id from tmall side</description>
+				<modifiers  write="true" optional="true" />
+				<persistence type="property" />
+			</attribute> 
+			
+			
+			<attribute qualifier="tmallCategoryId" type="java.lang.String">
+				<description>The category id from tmall side</description>
+				<modifiers  write="true" optional="true" />
+				<persistence type="property" />
+			</attribute> 
+		</attributes>
+	</itemtype>
+	</itemtypes>
+
+</items>
+

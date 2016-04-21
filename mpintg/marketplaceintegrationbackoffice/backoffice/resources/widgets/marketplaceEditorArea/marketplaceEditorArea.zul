@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<widget xmlns="http://www.zkoss.org/2005/zul" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.zkoss.org/2005/zul http://www.hybris.com/schema/cockpitng/zul/zul.xsd "
+        height="100%">
+
+    <vlayout width="100%" height="100%">
+        <div sclass="yw-editorarea-caption" visible="${widgetSettings.enableEmbededTitle}">
+            <label id="editorAreaTitle" sclass="yw-editorarea-title"/>
+        </div>
+        <div id="toolbarContainer" sclass="yw-listview-actioncontainer yw-editorarea-actioncontainer">
+            <div class="y-toolbar-spacer"/>
+            <div class="y-toolbar">
+                <div class="y-toolbar-leftslot">
+                    <actions id="actionSlot" group="common" sclass="yw-listview-actionSlot"/>
+                </div>
+                <div class="y-toolbar-rightslot">
+                    <toolbarbutton id="viewModeButton" sclass="yw-viewMode-btn"
+                                   visible="${widgetSettings.viewModeBtnVisible}"/>
+                    <div sclass="yw-editorarea-navi-container">
+                        <widgetslot slotID="previousItemSelectorSlot"/>
+                        <widgetslot slotID="nextItemSelectorSlot"/>
+                    </div>
+                    <button id="cancelButton" label="${labels.editorArea.reset}"/>
+                    <button id="saveButton" label="${labels.editorArea.save}" sclass="y-btn-primary"/>
+                </div>
+            </div>
+            <div class="y-toolbar-spacer"/>
+        </div>
+        <div sclass="yw-editor-area-main-content" vflex="1">
+            <div id="attributesDiv"/>
+        </div>
+    </vlayout>
+    
+    <editor id="com.hybris.cockpitng.editor.valuechangedchecktext" type="java.lang.String" onValueChanged="marketplaceEditorAreaController.doValueChangeCheck()" />
+</widget>

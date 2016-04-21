@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action-definition id="de.hybris.mpintgomsbackoffice.actions.rejectaction"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+    <name>reject.action.name</name>
+    <description>Reject Action</description>
+    <author>hybris</author>
+    <version>1.0</version>
+
+    <actionClassName>de.hybris.platform.mpintgomsbackoffice.actions.reject.ConfirmRejectAction</actionClassName>
+    <inputType>com.hybris.backoffice.model.TmallRefundRequestModel</inputType>
+    <outputType>com.hybris.backoffice.model.TmallRefundRequestModel</outputType>
+
+    <iconUri>icons/icon_action_reject_active.png</iconUri>
+    <iconDisabledUri>icons/icon_action_reject_disabled.png</iconDisabledUri>
+    <iconHoverUri>icons/icon_action_reject_hover.png</iconHoverUri>
+
+    <settings>
+        <setting key="viewMode" default-value="iconAndText"/>
+    </settings>
+</action-definition>

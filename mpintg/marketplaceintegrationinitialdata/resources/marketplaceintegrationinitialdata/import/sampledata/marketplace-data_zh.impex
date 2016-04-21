@@ -1,0 +1,78 @@
+# Language
+$lang=zh
+$productCatalog=electronics-cnProductCatalog
+$catalogVersion=catalogVersion(catalog(id[default=$productCatalog]),version[default='Online'])[unique=true,default=$productCatalog:Online]
+
+# 
+# Import MarketPlace
+#
+INSERT_UPDATE MarketPlace;code[unique=true];name[lang=$lang];URL[unique=true];adapterUrl;tmallOrderStatus(code);timezone
+;tmall;天猫;http://www.tmall.com;https://<serverip>/tmallapp;WAIT_SELLER_SEND_GOODS;Asia/Shanghai
+
+# 
+# Import MarketPlaceSeller
+#
+INSERT_UPDATE MarketPlaceSeller;name[unique=true];marketplace(name[lang=$lang]);basestore(uid)
+;jjouc001;天猫;electronics-cn
+
+# 
+# Import MarketPlaceStore
+#
+INSERT_UPDATE MarketPlaceStore;name[unique=true];marketplaceseller(name);marketplace(name[lang=$lang]);currency(isocode);$catalogVersion
+;Burberry;jjouc001;天猫;CNY;
+# 
+# Import Standard Carrier Data
+#
+INSERT_UPDATE StandardCarrier; id[unique=true]; code; name[lang=$lang]
+;001;HOAU;天地华宇
+;002;DTW;大田
+;003;ZTO;中通快递
+;004;YUNDA;韵达快递
+;005;SF;顺丰速运
+;006;EMS;EMS
+;007;ZJS;宅急送
+;008;YTO;圆通速递
+;009;POST;中国邮政
+;010;OTHER;其他
+;011;AIR;亚风
+;012;MGSD;美国速递
+;013;BHWL;保宏物流
+;014;UNIPS;发网
+;015;YUD;长发
+;016;YC;远长
+;017;DFH;东方汇
+;018;CYEXP;长宇
+;019;WND;WnDirect
+;020;GZLT;飞远配送
+;021;PKGJWL;派易国际物流77
+;022;HTKY;百世汇通
+;023;YCT;黑猫宅急便
+;024;SURE;速尔
+;025;DBL;德邦物流
+;026;UC;优速快递
+;027;ESB;E速宝
+;028;GTO;国通快递
+;029;LB;龙邦速递
+;030;POSTB;邮政快递包裹
+;031;QRT;增益速递
+;032;FAST;快捷快递
+;033;TTKDEX;天天快递
+;034;HZABC;飞远(爱彼西)配送
+;035;EYB;EMS经济快递
+;036;DBKD;德邦快递
+;037;CNEX;佳吉快递
+;038;GDEMS;广东EMS
+;039;QFKD;全峰快递
+;040;FEDEX;联邦快递
+;041;UAPEX;全一快递
+;042;XB;新邦物流
+;043;STO;申通快递
+;044;XFWL;信丰物流
+;045;ZTOSH;ZTOSH
+;046;ZTOGZ;ZTOGZ
+;047;SHQ;华强物流
+;048;CRE;中铁快运
+;049;GZFY;凡宇速递
+;050;BEST;百世物流
+;051;YANWENGZ;燕文广州
+;052;YANWENBJ;燕文北京

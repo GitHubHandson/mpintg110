@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<process xmlns="http://www.hybris.de/xsd/processdefinition" start="checkOrder"
+	name="tmall-order-process" processClass="de.hybris.platform.orderprocessing.model.OrderProcessModel">
+	
+	<!-- Check Order -->
+	<action id="checkOrder" bean="checkOrderAction">
+		<transition name="OK" to="geocodeShippingAddress"/>
+		<transition name="NOK" to="error"/>
+	</action>
+	
+	<!-- Sourcing and Allocation -->
+	<action id="geocodeShippingAddress" bean="geocodeShippingAddressAction">
+		<transition name="OK" to="sourceOrder"/>
+	</action>
+	
+	<action id="sourceOrder" bean="sourceOrderAction">
+		<transition name="OK" to="waitForOrderAction"/>
+	</action>
+	
+	<!-- Wait to perform action on Order -->
+	<wait id="waitForOrderAction" prependProcessCode="true" then="failed">
+		<case event="OrderActionEvent">
+			<choice id="consignmentProcessEnded" then="verifyOrderCompletion"/>
+			<choice id="cancelOrder" then="waitForOrderCancellationCompletion"/>
+		</case>
+	</wait>
+	
+	<!-- Wait for order cancellation to be completed -->
+	<wait id="waitForOrderCancellationCompletion" then="verifyOrderPostCancellation" prependProcessCode="true">
+		<event>CancellationCompletionEvent</event>
+	</wait>
+	
+	<action id="verifyOrderPostCancellation" bean="verifyOrderPostCancellationAction">
+		<transition name="NOK" to="verifyOrderCompletion"/>
+		<transition name="OK" to="success"/>
+		<transition name="WAIT" to="waitForOrderAction"/>
+	</action>
+	
+	<action id="verifyOrderCompletion" bean="verifyOrderCompletionAction">
+		<transition name="OK" to="completeOrder"/>
+		<transition name="NOK" to="waitForOrderAction"/>
+	</action>
+	
+	<!-- Tax and Payment -->	
+	<action id="completeOrder" bean="completeOrderAction">
+		<transition name="OK" to="success"/>
+	</action>
+	
+	<end id="error" state="ERROR">Order process error.</end>
+	<end id="failed" state="FAILED">Order process failed.</end>
+	<end id="success" state="SUCCEEDED">Order process completed.</end>
+	
+</process>

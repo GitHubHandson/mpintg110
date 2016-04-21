@@ -1,0 +1,6 @@
+{
+	"_comment" : "Do not modify this file if you don't know what you do! see https://wiki.hybris.com/display/INFRA/Blackduck+Open+Source+Scanning ",
+	"area" : "ecp",
+	"bdscan" : true,
+	"bdscan-contact" : "john.lu01@sap.com"
+}

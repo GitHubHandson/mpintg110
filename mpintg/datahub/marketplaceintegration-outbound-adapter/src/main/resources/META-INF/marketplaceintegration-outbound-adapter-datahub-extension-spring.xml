@@ -1,0 +1,32 @@
+<!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  -->
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.springframework.org/schema/beans"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<alias name="tmallAdapter" alias="tmallAdapterService" />
+	<bean name="tmallAdapter" class="com.hybris.datahub.outbound.adapter.TmallAdapter">
+		<property name="publicationActionService" ref="publicationActionService" />
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="targetSystemType" value="HybrisCore2" />
+		<property name="pageSize" value="${datahub.publication.page.size:1000}" />
+		<property name="httpUtil" ref="restTemplateUtil" />
+	</bean>
+
+	<alias name="RestTemplateUtil" alias="restTemplateUtil" />
+	<bean id="RestTemplateUtil" class="com.hybris.datahub.outbound.utils.RestTemplateUtil">
+		<property name="defaultContentType" value="application/json;charset=UTF-8" />
+		<property name="baseAuthUser" value="${auth.baseAuthUser}" />
+		<property name="baseAuthPwd" value="${auth.baseAuthPassword}" />
+	</bean>
+
+</beans>

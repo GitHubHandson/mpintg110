@@ -1,0 +1,25 @@
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widgets.xsd">
+
+    <widget-extension widgetId="omsCollapsibleContainer">
+
+            <remove widgetId="omsAdvancedSearch"/>
+            <widget id="omsAdvancedSearch" widgetDefinitionId="com.hybris.cockpitng.advancedsearch" slotId="top" template="false">
+                    
+            	<widget id="omsAdvancedSearchEngine" widgetDefinitionId="com.hybris.cockpitng.widgets.common.advancedsearchengine" slotId="cockpitWidgetChildrenInvisible" template="false">
+                        <setting key="widgetStyleAttribute" type="String"></setting>
+                        <setting key="widgetStyleClass" type="String"></setting>
+                        <setting key="defaultPageSize" type="Integer">10</setting>
+                        <virtual-sockets/>
+            	</widget>
+                    
+            	<setting key="advancedSearchConfigCtxCode" type="String">advanced-search</setting>
+            	<setting key="widgetStyleAttribute" type="String"></setting>
+            	<setting key="addRowPosition" type="String">Header</setting>
+            	<setting key="widgetStyleClass" type="String"></setting>
+            	<setting key="isNestedObjectCreationDisabled" type="Boolean">true</setting>
+            	<setting key="simpleSearchConfigCtxCode" type="String">simple-search</setting>
+            	<setting key="forceSearchForCode" type="String">WorkflowAction,Order,ReturnRequest,TmallRefundRequest</setting>
+            	<virtual-sockets/>
+            </widget>
+     </widget-extension>
+</widgets>

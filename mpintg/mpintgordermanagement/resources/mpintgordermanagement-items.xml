@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2016 hybris AG All rights reserved. This software is the confidential and proprietary information 
+	of hybris ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with 
+	the terms of the license agreement you entered into with hybris. -->
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+
+	<!-- Start of Order Return -->
+	<enumtypes>
+		<enumtype code="RefundAction" autocreate="true" generate="true" dynamic="true">
+			<value code="Awaiting_Approval" />
+			<value code="Awaiting_Goods_Return" />
+			<value code="Awaiting_Return_Confirmation" />
+			<value code="Rejected_by_seller" />
+			<value code="Closed_by_customer" />
+			<value code="Completed" />
+		</enumtype>
+		
+		<enumtype code="RefundType" autocreate="true" generate="true" dynamic="true">
+			<value code="REFUND_ONLY" />
+			<value code="RETURN_REFUND" />
+		</enumtype>
+	</enumtypes>	
+
+	<relations>
+		<relation generate="true" localized="false" code="TmallOrder2TmallRefundRequest" autocreate="true">
+			<sourceElement type="TmallOrder" qualifier="tmallOrder" cardinality="one">
+				<modifiers read="true" write="true" optional="true" />
+			</sourceElement>
+			<targetElement type="TmallRefundRequest" qualifier="tmallRefundRequest" cardinality="many" ordered="true"
+				collectiontype="list">
+				<modifiers read="true" write="true" optional="true" />
+			</targetElement>
+		</relation>	
+	</relations>
+
+	<itemtypes>
+
+		<itemtype code="ConsignmentProcess" autocreate="false" generate="false">
+			<attributes>
+				<attribute qualifier="done" type="boolean">
+					<description>Mark process as done</description>
+					<modifiers optional="false" initial="false" />
+					<persistence type="property" />
+					<defaultvalue>Boolean.FALSE</defaultvalue>
+				</attribute>
+
+				<attribute qualifier="waitingForConsignment" type="boolean">
+					<description>Mark that process is waiting for consignment</description>
+					<modifiers optional="false" initial="false" />
+					<persistence type="property" />
+					<defaultvalue>Boolean.FALSE</defaultvalue>
+				</attribute>
+
+				<attribute qualifier="warehouseConsignmentState" type="WarehouseConsignmentState">
+					<description>State of warehouse process.</description>
+					<persistence type="property" />
+					<modifiers initial="false" optional="true" />
+				</attribute>
+
+			</attributes>
+		</itemtype>
+
+		<itemtype code="MarketplaceCarrier" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.MarketplaceCarrier">
+			<deployment table="MarketplaceCarrier" typecode="9875" />
+			<attributes>
+				<attribute qualifier="id" type="java.lang.String">
+					<description>Marketplace carrier code</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Marketplace carrier id</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="marketplace" type="Marketplace">
+					<description>Marketplace</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="standardCarrier" type="StandardCarrier">
+					<description>Standard carrier</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>								
+			</attributes>
+		</itemtype>
+
+		<typegroup name="Consignment">
+			<itemtype code="Consignment" autocreate="false" generate="false">
+				<description>Extending Consignment type with additional attributes.</description>
+				<attributes>
+					<attribute type="StandardCarrier" qualifier="standardCarrier">
+						<description>Hybris Standard Carrier</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute type="java.lang.String" qualifier="marketplaceTrackingID">
+						<description>Marketplace Tracking ID</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+
+		<typegroup name="MarketplaceRefundRequest">
+			<itemtype code="MarketplaceRefundRequest" generate="true" autocreate="true"
+				jaloclass="com.hybris.backoffice.jalo.MarketplaceRefundRequest">
+				<deployment table="MarketplaceRefundRequest" typecode="9876" />
+				<attributes>
+					<attribute qualifier="marketplaceStore" type="MarketplaceStore">
+						<description>MarketplaceStore</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="customer" type="Customer">
+						<description>Customer</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="product" type="Product">
+						<description>Product</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="consignment" type="Consignment">
+						<description>Consignment</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="waitMarketPlaceResponse" type="java.lang.Boolean">
+						<description>Flag to indicate whether there is action before and wait marketplace response</description>
+						<modifiers optional="false" />
+						<persistence type="property" />
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+
+		<typegroup name="TmallRefundRequest">
+			<itemtype code="TmallRefundRequest" extends="MarketplaceRefundRequest" generate="true" autocreate="true"
+				jaloclass="com.hybris.backoffice.jalo.TmallRefundRequest">
+				<deployment table="TmallRefundRequest" typecode="9877" />
+				<attributes>
+					<!-- <attribute qualifier="tmallOrder" type="TmallOrder"> <description>Tmall Order Entry</description> <modifiers /> <persistence 
+						type="property" /> </attribute> -->
+					<attribute qualifier="tmallOrderEntry" type="TmallOrderEntry">
+						<description>Tmall Order Entry</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundId" type="java.lang.String">
+						<description>Refund ID</description>
+						<modifiers optional="false" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundType" type="RefundType">
+						<description>Refund Type</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundStatus" type="RefundStatus">
+						<description>Refund Status</description>
+						<modifiers />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="totalFee" type="java.lang.String">
+						<description>Total Fee</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundAction" type="RefundAction">
+						<description>Refund Action</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundFee" type="java.lang.String">
+						<description>Refund Fee</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundCreatedDate" type="java.util.Date">
+						<description>Refund Created Date</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundReason" type="java.lang.String">
+						<description>Refund Reason</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+					</attribute>
+					<attribute qualifier="refundComments" type="java.lang.String">
+						<description>Refund Comments by creator or processor</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+						<custom-properties>
+							<property name="hmcIndexField">
+								<value>"thefield"</value>
+							</property>
+						</custom-properties>
+					</attribute>
+					<attribute qualifier="verifyCode" type="java.lang.String">
+						<description>Verify Code</description>
+						<modifiers optional="true" />
+						<persistence type="property"></persistence>
+					</attribute>
+					<attribute qualifier="returnAddress" type="Address">
+						<description>return Address</description>
+						<modifiers optional="true" />
+						<persistence type="property"></persistence>
+					</attribute>
+					<attribute qualifier="returnRemark" type="java.lang.String">
+						<description>return Remark</description>
+						<modifiers optional="true" />
+						<persistence type="property" />
+						<custom-properties>
+							<property name="hmcIndexField">
+								<value>"thefield"</value>
+							</property>
+						</custom-properties>
+					</attribute>
+				</attributes>
+			</itemtype>
+		</typegroup>
+	</itemtypes>
+</items>

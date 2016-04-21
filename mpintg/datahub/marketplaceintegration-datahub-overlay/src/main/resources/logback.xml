@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration scan="true" scanPeriod="30 seconds">
+	<property name="LOG_HOME_DIR" value="${user.home}/datahub" />
+
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>[%-5level] %d{HH:mm:ss.SSS} [%.6thread] %logger - %msg%n</pattern>
+			<charset>UTF-8</charset>
+		</encoder>
+	</appender>
+
+	<appender name="all_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<File>${LOG_HOME_DIR}/error.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>error.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<encoder>
+				<pattern>[%-5level] %d{HH:mm:ss.SSS} [%.6thread] %logger{80} - %msg%n</pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</layout>
+	</appender>
+
+	<appender name="all_warn" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>WARN</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<File>${LOG_HOME_DIR}/warn.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>warn.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<encoder>
+				<pattern>[%-5level] %d{HH:mm:ss.SSS} [%.6thread] %logger{80} - %msg%n</pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</layout>
+	</appender>
+
+	<appender name="all_info" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<File>${LOG_HOME_DIR}/info.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>info.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<encoder>
+				<pattern>[%-5level] %d{HH:mm:ss.SSS} [%.6thread] %logger{80} - %msg%n</pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</layout>
+	</appender>
+
+	<appender name="all_debug" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>DEBUG</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<File>${LOG_HOME_DIR}/debug.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>debug.%i.log</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>10</MaxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>50MB</MaxFileSize>
+		</triggeringPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<encoder>
+				<pattern>[%-5level] %d{HH:mm:ss.SSS} [%.6thread] %logger{80} - %msg%n</pattern>
+				<charset>UTF-8</charset>
+			</encoder>
+		</layout>
+	</appender>
+
+	<logger name="com.hybris.datahub" level="INFO" />
+	<logger name="com.hybris.datahub.service.impl.handler" level="DEBUG" />
+
+	<root level="ERROR">
+		<appender-ref ref="STDOUT" level="WARN" />
+		<appender-ref ref="all_debug" level="DEBUG" />
+		<appender-ref ref="all_warn" level="WARN" />
+		<appender-ref ref="all_info" level="INFO" />
+		<appender-ref ref="all_error" level="ERROR" />
+	</root>
+</configuration>

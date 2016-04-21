@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action-definition id="de.hybris.mpintgomsbackoffice.actions.confirmreturnaction"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+    <name>confirmreturn.action.name</name>
+    <description>Confirm Return Action</description>
+    <author>hybris</author>
+    <version>1.0</version>
+
+    <actionClassName>de.hybris.platform.mpintgomsbackoffice.actions.confirmreturn.ConfirmReturnAction</actionClassName>
+    <inputType>com.hybris.backoffice.model.TmallRefundRequestModel</inputType>
+    <outputType>com.hybris.backoffice.model.TmallRefundRequestModel</outputType>
+
+    <iconUri>icons/icon_action_confirmreturn_active.png</iconUri>
+    <iconDisabledUri>icons/icon_action_confirmreturn_disabled.png</iconDisabledUri>
+    <iconHoverUri>icons/icon_action_confirmreturn_hover.png</iconHoverUri>
+
+    <settings>
+        <setting key="viewMode" default-value="iconAndText"/>
+    </settings>
+</action-definition>

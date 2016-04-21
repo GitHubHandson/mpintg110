@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<parent>
+		<groupId>com.hybris.datahub</groupId>
+		<artifactId>marketplaceintegration-datahub</artifactId>
+		<version>5.7.0.2-RC1</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>marketplaceintegration-datahub-overlay</artifactId>
+	<packaging>war</packaging>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>datahub-webapp</artifactId>
+			<version>${datahub.webapp.version}</version>
+			<type>war</type>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>marketplaceintegration-raw</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>marketplaceintegration-canonical</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>marketplaceintegration-target</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>marketplaceintegration-event</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>marketplaceintegration-inbound-adapter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.hybris.datahub</groupId>
+			<artifactId>marketplaceintegration-outbound-adapter</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>datahub-webapp</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<overlays>
+						<overlay>
+							<id>datahub-webapp</id>
+						</overlay>
+					</overlays>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<path>/datahub-webapp</path>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

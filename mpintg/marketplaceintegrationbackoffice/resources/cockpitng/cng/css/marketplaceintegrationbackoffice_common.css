@@ -1,0 +1,18 @@
+@CHARSET "UTF-8";
+
+/*Icons for explorer tree */
+div.yw-explorerTree .y-tree-icon-marketplace_typenode_marketplace .y-tree-icon {
+      background-image: url("images/0134_Marketplace.png");
+}
+
+div.yw-explorerTree .y-tree-icon-marketplace_typenode_marketplaceseller .y-tree-icon {
+      background-image: url("images/0135_Marketplace-Seller.png");
+}
+
+div.yw-explorerTree .y-tree-icon-marketplace_typenode_marketplacestore .y-tree-icon {
+      background-image: url("images/0136_Marketplace-Store.png");
+}
+
+div.yw-explorerTree .y-tree-icon-marketplace_typenode_marketplacelog .y-tree-icon {
+      background-image: url("images/0137_Marketplace-Log.png");
+}

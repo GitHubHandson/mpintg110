@@ -1,0 +1,60 @@
+def config = {
+    extensions {
+        extName 'mcc'		
+		extName 'mpintgordermanagement'
+		extName 'mpintgomsbackoffice'
+		extName 'marketplaceintegrationinitialdata'		
+        extName 'timedaccesspromotionsbackoffice'
+        extName 'alipaymentbackoffice'
+        extName 'chinaacceleratorbackoffice'		
+        extName 'commercesearchbackoffice'		
+		extName 'commerceservicesbackoffice'
+		extName 'solrfacetsearchbackoffice'	
+	    extName 'timedaccesspromotionsstorefront'
+		extName 'jiathis'
+		extName 'solrserver'
+        extName 'ychinaacceleratorstorefront'
+        extName 'chinastoreelectronics'
+        extName 'ycommercewebservices'
+        extName 'yacceleratorcockpits'
+        extName 'btgcockpit'
+        extName 'yaddon'
+        extName 'yinstoreinitialdata'
+        extName 'commercesearchhmc'
+        extName 'commercesearchsampledata'
+		extName 'timedaccesspromotionsserviceshmc'
+		extName 'warehousing'
+		extName 'ordermanagementbackoffice'
+		extName 'datahubadapter'
+		extName 'datahubbackoffice'		
+    }
+}
+
+task setup << {
+    apply plugin: 'installer-platform-plugin'
+    apply plugin: 'installer-addon-plugin'
+    def pl = platform(config)
+    pl.setup()
+    
+     pl.project.addons {
+        names "timedaccesspromotionsstorefront,jiathis"
+        template "ychinaacceleratorstorefront"
+        storeFronts "ychinaacceleratorstorefront"
+        platform pl
+    }
+    
+}
+
+task initialize << {
+    apply plugin: 'installer-platform-plugin'
+    def pl = platform(config)
+    pl.build()
+    pl.initialize()
+}
+
+
+task start << {
+    apply plugin: 'installer-platform-plugin'
+    def pl = platform(config)
+    pl.start()
+}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="TMALL Test Suite">
+    <test name="Service Suite" preserve-order="true" verbose="2">
+        <classes>
+            <class name="com.hybris.integration.tmall.service.AccessTokenServiceTest"/>
+            <class name="com.hybris.integration.tmall.service.TradeServiceTest"/>
+            <class name="com.hybris.integration.tmall.service.TmcMessagesServiceTest"/>
+        </classes>
+    </test>
+    <test name="Controller Suite" preserve-order="true" verbose="2">
+        <classes>
+            <class name="com.hybris.integration.tmall.controller.TradeControllerTest"/>
+        </classes>
+    </test>
+    <test name="Others Suite" preserve-order="true" verbose="2">
+        <classes>
+            <class name="com.hybris.integration.tmall.others.TestAttributeEncryptionStrategy"/>
+        </classes>
+    </test>
+</suite>

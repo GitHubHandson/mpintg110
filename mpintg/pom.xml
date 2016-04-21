@@ -1,0 +1,132 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>com.hybris.onpremise</groupId>
+		<artifactId>superpom</artifactId>
+		<version>1.0.14</version>
+	</parent>
+
+	<groupId>de.hybris.platform</groupId>
+	<artifactId>china-marketplace-module</artifactId>
+	<version>1.1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+    <dependencies>
+		<dependency>
+			<artifactId>b2caccelerator-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${b2caccelerator.version}</version>
+		</dependency>
+		<dependency>
+		    <artifactId>backoffice-module</artifactId>
+		    <groupId>de.hybris.platform</groupId>
+		    <type>zip</type>
+		    <version>${backoffice.version}</version>
+        </dependency>
+		<dependency>
+			<artifactId>basecommerce-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${basecommerce.version}</version>
+		</dependency>
+		<dependency>
+			<artifactId>china-accelerator-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${china-accelerator.version}</version>
+		</dependency>		
+		<dependency>
+			<artifactId>ordermanagement-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${ordermanagement.version}</version>
+		</dependency>	
+		<dependency>
+			<artifactId>wcms-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${wcms.version}</version>
+		</dependency>		
+		<dependency>
+			<artifactId>pcm-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${pcm.version}</version>
+		</dependency>	
+		<dependency>
+			<artifactId>customerservice-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${customerservice.version}</version>
+		</dependency>	
+		<dependency>
+			<artifactId>cockpit-apps-module</artifactId>
+			<groupId>de.hybris.platform</groupId>
+			<type>zip</type>
+			<version>${cockpit-apps.version}</version>
+		</dependency>	
+	</dependencies>
+
+	<properties>
+		<!-- dependencies versions properties -->
+		<b2caccelerator.version>5.7.0.0-RC6</b2caccelerator.version>
+		<backoffice.version>5.7.0.0-RC6</backoffice.version>
+		<basecommerce.version>5.7.0.0-RC5</basecommerce.version>
+		<china-accelerator.version>5.7.0.0-RC4</china-accelerator.version>
+		<ordermanagement.version>5.7.0.0-RC13</ordermanagement.version>
+		<wcms.version>5.7.0.0.7</wcms.version>
+		<pcm.version>5.7.0.0-RC1</pcm.version>
+		<customerservice.version>5.7.0.0-RC2</customerservice.version>
+		<cockpit-apps.version>5.7.0.0-RC1</cockpit-apps.version>
+		
+		<!-- hybris platform properties -->
+		<platform.extensions>marketplaceintegration,marketplaceintegrationbackoffice,marketplaceintegrationinitialdata,mpintgomsbackoffice,mpintgordermanagement,mpintgproductcockpit</platform.extensions>
+		<testclasses.extensions>marketplaceintegration,marketplaceintegrationbackoffice,marketplaceintegrationinitialdata,mpintgomsbackoffice,mpintgordermanagement,mpintgproductcockpit</testclasses.extensions>
+		<codequality.extensions>marketplaceintegration,marketplaceintegrationbackoffice,marketplaceintegrationinitialdata,mpintgomsbackoffice,mpintgordermanagement,mpintgproductcockpit</codequality.extensions>
+
+		<!-- hybris distribution properties -->
+		<dist.extensions.binary></dist.extensions.binary>
+		<dist.extensions.source>marketplaceintegration,marketplaceintegrationinitialdata,mpintgordermanagement,marketplaceintegrationbackoffice,mpintgomsbackoffice,mpintgproductcockpit</dist.extensions.source>
+		<dist.create.source.dist>true</dist.create.source.dist>
+		<dist.finaldevzipname>${project.build.directory}/distribution-dev.zip</dist.finaldevzipname>
+		<hybris.local.ext.marketplaceintegration.package>ext-integration</hybris.local.ext.marketplaceintegration.package>
+		<hybris.local.ext.marketplaceintegrationbackoffice.package>ext-backoffice</hybris.local.ext.marketplaceintegrationbackoffice.package>
+		<hybris.local.ext.marketplaceintegrationinitialdata.package>ext-data</hybris.local.ext.marketplaceintegrationinitialdata.package>	
+		<hybris.local.ext.mpintgomsbackoffice.package>ext-backoffice</hybris.local.ext.mpintgomsbackoffice.package>
+		<hybris.local.ext.mpintgordermanagement.package>ext-commerce</hybris.local.ext.mpintgordermanagement.package>
+		<hybris.local.ext.mpintgproductcockpit.package>ext-commerce</hybris.local.ext.mpintgproductcockpit.package>
+	</properties>
+
+	<build>
+		<plugins>
+        	<plugin>
+            	<groupId>org.codehaus.mojo</groupId>
+            	<artifactId>build-helper-maven-plugin</artifactId>
+            	<version>1.8</version>
+            	<executions>
+                	<execution>
+                    	<id>attach-artifacts</id>
+                    	<phase>package</phase>
+                    	<goals>
+                        	<goal>attach-artifact</goal>
+                    	</goals>
+                    	<configuration>
+                        	<artifacts>
+                            	<artifact>
+                                	<file>${project.build.directory}/distribution-dev.zip</file>
+                                	<classifier>dev</classifier>
+                                	<type>zip</type>
+                            	</artifact>
+                        	</artifacts>
+                    	</configuration>
+                	</execution>
+            	</executions>
+        	</plugin>
+		</plugins>
+	</build>
+
+</project>

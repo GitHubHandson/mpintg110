@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+  ~ [y] hybris Platform
+  ~
+  ~ Copyright (c) 2000-2016 hybris AG
+  ~ All rights reserved.
+  ~
+  ~ This software is the confidential and proprietary information of hybris
+  ~ ("Confidential Information"). You shall not disclose such Confidential
+  ~ Information and shall use it only in accordance with the terms of the
+  ~ license agreement you entered into with hybris.
+  --><widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/widgets.xsd">
+  	<import resource="/mpintgomsbackoffice-backoffice-widgets-internal.xml"/>
+	<widget-extension widgetId="backofficeMainSlot">
+		<widget id="openRefundConditionEvaluator" widgetDefinitionId="com.hybris.cockpitng.conditionevaluator"
+					slotId="cockpitWidgetChildrenInvisible" template="false">					
+			<widget id="openRefundStatus" widgetDefinitionId="de.hybris.mpintgomsbackoffice.widgets.OpenRefundStatus" slotId="cockpitWidgetChildrenInvisible"
+						template="false">
+				<setting key="widgetStyleAttribute" type="String"></setting>
+				<setting key="widgetStyleClass" type="String"></setting>
+				<virtual-sockets />
+			</widget>
+				<setting key="expression" type="String">#root.id EQ 'ordermanagementbackoffice.typenode.request.open'</setting>
+				<setting key="socketDataType_$T" type="String">com.hybris.backoffice.navigation.NavigationNode</setting>
+			<virtual-sockets />					
+		</widget>
+	    <setting key="autoCloseInactive" type="Boolean">false</setting>	    	         
+	</widget-extension>
+	
+    <widget-connection sourceWidgetId="omsExplorerTree" outputId="nodeSelected" targetWidgetId="openRefundConditionEvaluator" inputId="input"/>
+ 	<widget-connection sourceWidgetId="openRefundConditionEvaluator" outputId="true" targetWidgetId="openRefundStatus" inputId="nodeSelected"/>
+ 	<widget-connection sourceWidgetId="openRefundStatus" outputId="outContext" targetWidgetId="omsAdvancedSearch" inputId="initContext"/>
+
+</widgets>

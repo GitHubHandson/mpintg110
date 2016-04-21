@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2016 hybris AG All rights reserved. This software is the confidential and proprietary information 
+	of hybris ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with 
+	the terms of the license agreement you entered into with hybris. -->
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:marketplaceintegration.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="marketplaceSellerRemoveInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplaceSellerRemoveInterceptor" />
+
+	<!-- commented by Wallace to inValiad the interceptor -->
+	<!--bean id="marketplaceSaveInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplaceSaveInterceptor" 
+		> <property name="marketplaceHttpUtil" ref="marketplaceHttpUtil" /> <property name="marketplaceintegrationService" ref="marketplaceintegrationService" 
+		/> </bean -->
+
+	<bean id="marketplacePrepareInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplacePrepareInterceptor" />
+
+	<bean id="marketplaceStorePrepareInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplaceStorePrepareInterceptor" />
+
+	<bean id="marketplaceOrderPrepareInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplaceOrderPrepareInterceptor">
+		<property name="modelService" ref="modelService" />
+	</bean>
+	<bean id="marketplaceLogPrepareInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplaceLogPrepareInterceptor">
+		<property name="modelService" ref="modelService" />
+	</bean>
+	<!-- commented by Wallace to inValiad the interceptor -->
+	<!-- bean id="marketplaceAuthInvalidationCheckInterceptor" class="de.hybris.platform.marketplaceintegration.interceptor.MarketplaceAuthInvalidationCheckInterceptor" 
+		> <property name="marketplaceHttpUtil" ref="marketplaceHttpUtil" /> <property name="marketplaceintegrationService" ref="marketplaceintegrationService" 
+		/> </bean -->
+
+	<bean id="marketplaceOrderPrepareInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="marketplaceOrderPrepareInterceptor" />
+		<property name="typeCode" value="MarketplaceOrder" />
+	</bean>
+
+	<!-- commented by Wallace to inValiad the interceptor -->
+	<!--bean id="marketplaceInterceptorMapping" scope="tenant" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping"> 
+		<property name="interceptor" ref="marketplaceAuthInvalidationCheckInterceptor" /> <property name="typeCode" value="Marketplace" /> 
+		</bean -->
+	<!-- commented by Wallace to inValiad the interceptor -->
+	<!--bean id="marketplaceSaveInterceptorMapping" scope="tenant" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping"> 
+		<property name="interceptor" ref="marketplaceSaveInterceptor" /> <property name="typeCode" value="MarketplaceStore" /> </bean -->
+
+	<bean id="marketplacePrepareInterceptorMapping" scope="tenant" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="marketplacePrepareInterceptor" />
+		<property name="typeCode" value="Marketplace" />
+	</bean>
+
+	<bean id="marketplaceStorePrepareInterceptorMapping" scope="tenant"
+		class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="marketplaceStorePrepareInterceptor" />
+		<property name="typeCode" value="MarketplaceStore" />
+	</bean>
+
+	<bean id="marketplaceSellerRemoveInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="marketplaceSellerRemoveInterceptor" />
+		<property name="typeCode" value="MarketplaceSeller" />
+	</bean>
+	<bean id="marketplaceLogPrepareInterceptorMapping" class="de.hybris.platform.servicelayer.interceptor.impl.InterceptorMapping">
+		<property name="interceptor" ref="marketplaceLogPrepareInterceptor" />
+		<property name="typeCode" value="MarketplaceLogHistory" />
+	</bean>
+
+	<bean id="marketplaceintegrationService" class="de.hybris.platform.marketplaceintegration.service.impl.MarketplaceintegrationServiceImpl">
+		<property name="marketplaceintegrationDao" ref="marketplaceintegrationDao" />
+	</bean>
+	
+	<alias name="marketplaceintegrationhttputilimpl" alias="marketplaceHttpUtil"/>
+    <bean id="marketplaceintegrationhttputilimpl" class="de.hybris.platform.marketplaceintegration.utils.impl.MarketplaceintegrationHttpUtilImpl">
+          <property name="httpHeaders">  
+            <map>
+                <entry key="Content-Type" value="application/json" />
+            </map>
+        </property>
+          <property name="baseAuthUser">  
+            <value>${auth.baseAuthUser}</value>  
+        </property>  
+        <property name="baseAuthPassword">  
+            <value>${auth.baseAuthPassword}</value>  
+        </property>
+    </bean>
+
+    <alias alias="marketplaceintegrationDao" name="marketplaceintegrationDaoImpl"/>
+    <bean id="marketplaceintegrationDaoImpl"
+            class="de.hybris.platform.marketplaceintegration.dao.impl.MarketplaceintegrationDaoImpl"
+            parent="abstractItemDao"
+    />
+	
+	<bean id="mpintglogbackofficeDao" class="de.hybris.platform.marketplaceintegration.dao.impl.MpintglogbackofficeDaoImpl" />
+
+	<alias name="marketplaceintegrationbackofficeLogUtil" alias="logUtil" />
+	<bean id="marketplaceintegrationbackofficeLogUtil" class="de.hybris.platform.marketplaceintegration.utils.MarketplaceintegrationbackofficeLogUtil">
+	</bean>
+</beans>

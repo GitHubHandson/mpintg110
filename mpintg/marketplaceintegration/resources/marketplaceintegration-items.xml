@@ -1,0 +1,553 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- [y] hybris Platform Copyright (c) 2000-2016 hybris AG All rights reserved. This software is the confidential and proprietary information 
+	of hybris ("Confidential Information"). You shall not disclose such Confidential Information and shall use it only in accordance with 
+	the terms of the license agreement you entered into with hybris. -->
+
+<items xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="items.xsd">
+	<collectiontypes>
+		<collectiontype code="TmallOrderEntryCollection" elementtype="TmallOrderEntry" type="list" />
+		<collectiontype elementtype="MarketplaceStore" code="MarketplaceStoreCollection" autocreate="true" type="collection" />
+		<collectiontype elementtype="MarketplaceSeller" code="MarketplaceSellerCollection" autocreate="true" type="collection" />
+		<collectiontype elementtype="TmallOrderStatus" code="TmallOrderStatusCollection" autocreate="true" type="collection" />
+		<collectiontype elementtype="TmallOrderType" code="TmallOrderTypeCollection" autocreate="true" type="collection" />
+	</collectiontypes>
+
+	<enumtypes>
+		<enumtype code="RefundStatus" autocreate="true" generate="true" dynamic="true">
+			<value code="NO_REFUND" />
+			<value code="WAIT_SELLER_AGREE" />
+			<value code="WAIT_BUYER_RETURN_GOODS" />
+			<value code="WAIT_SELLER_CONFIRM_GOODS" />
+			<value code="SELLER_REFUSE_BUYER" />
+			<value code="CLOSED" />
+			<value code="SUCCESS" />
+		</enumtype>
+	</enumtypes>
+	
+	<relations>
+		<relation code="BaseStore2StoreRel" generate="true" localized="false" autocreate="true">
+			<description>This relation links one base store with one or more marketplace store</description>
+			<sourceElement type="BaseStore" qualifier="baseStore" cardinality="one">
+				<modifiers optional="true" />
+			</sourceElement>
+			<targetElement type="MarketplaceStore" qualifier="marketplaceStores" cardinality="many" collectiontype="list"
+				ordered="true">
+				<modifiers optional="true" />
+			</targetElement>
+		</relation>
+
+		<relation code="MarketplaceStore2SellerRel" generate="true" localized="false" autocreate="true">
+			<description>This relation links one marketplace store with one or more marketplace sellers</description>
+			<sourceElement type="MarketplaceStore" qualifier="marketplaceStores" cardinality="many">
+				<modifiers optional="true" />
+			</sourceElement>
+			<targetElement type="MarketplaceSeller" qualifier="marketplaceSeller" cardinality="one">
+				<modifiers optional="false" />
+			</targetElement>
+		</relation>
+
+		<relation code="MarketplaceStore2TmallOrderStatusRel" generate="true" localized="false" autocreate="true">
+			<description>This relation links one or more marketplace store with one TmallOrderStatus.</description>
+			<sourceElement type="Marketplace" qualifier="marketplace" cardinality="one">
+				<modifiers optional="true" />
+			</sourceElement>
+			<targetElement type="TmallOrderStatus" qualifier="tmallOrderStatus" cardinality="many" collectiontype="list"
+				ordered="true">
+				<modifiers optional="false" />
+			</targetElement>
+		</relation>
+
+		<relation code="Marketplacelog2MarketplacelogHistoryRel" generate="true" localized="false" autocreate="true">
+			<description>This relation links one or more MarketplacelogHistory with one Marketplacelog.</description>
+			<sourceElement type="Marketplacelog" qualifier="marketplacelog" cardinality="one">
+				<modifiers optional="true" />
+			</sourceElement>
+			<targetElement type="MarketplacelogHistory" qualifier="marketplaceloghistory" cardinality="many" collectiontype="list"
+				ordered="true">
+				<modifiers optional="true" />
+			</targetElement>
+		</relation>
+	</relations>
+
+	<itemtypes>
+		<itemtype code="MarketplaceOrder" extends="Order" abstract="true"
+			jaloclass="de.hybris.platform.marketplaceintegration.jalo.MarketplaceOrder" autocreate="true" generate="true">
+			<deployment table="MarketplaceOrder" typecode="9860" />
+			<attributes>
+				<attribute qualifier="seller" type="MarketplaceSeller">
+					<description>Marketplace Seller</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="marketplaceStore" type="MarketplaceStore">
+					<description>Marketplace Store</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="externalCreatedDate" autocreate="true" type="java.util.Date">
+					<description>Trade Created Date</description>
+					<modifiers read="true" write="true" search="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="externalModifiedDate" autocreate="true" type="java.util.Date">
+					<description>Trade Modified Date</description>
+					<modifiers read="true" write="true" search="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="externalEndDate" autocreate="true" type="java.util.Date">
+					<description>Trade End Date</description>
+					<modifiers read="true" write="true" search="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="title" autocreate="true" type="java.lang.String">
+					<description>Trade ID</description>
+					<modifiers read="true" write="true" search="true" optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="buyerRemark" type="java.lang.String">
+					<description>buyer's remark, usually a message for seller about delivery time, cost etc.</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="sellerMemo" type="java.lang.String">
+					<description>seller's remark</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="isCompleted" type="java.lang.Boolean">
+					<description>Whether this order is completed</description>
+					<modifiers read="true" write="true" search="true" optional="false" />
+					<defaultvalue>Boolean.FALSE</defaultvalue>
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="TmallOrder" extends="MarketplaceOrder" jaloclass="de.hybris.platform.marketplaceintegration.jalo.TmallOrder"
+			autocreate="true" generate="true">
+			<deployment table="TmallOrder" typecode="9861" />
+			<attributes>
+				<attribute redeclare="true" qualifier="entries" type="TmallOrderEntryCollection" />
+				<attribute type="TmallOrderType" qualifier="tmallOrderType">
+					<description>Tmall order Type</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute type="TmallOrderStatus" qualifier="tmallOrderStatus">
+					<description>Tmall Order Status</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="tmallOrderId">
+					<description>Tmall Trade ID</description>
+					<modifiers optional="false" search="true"/>
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="alipayTransId">
+					<description>Alipay Transaction ID (alipayNo)</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+				<attribute type="java.lang.String" qualifier="tmallOrderEntriesNo">
+					<description>Tmall Order Entries No</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="TmallOrderEntry" extends="OrderEntry" jaloclass="de.hybris.platform.marketplaceintegration.jalo.TmallOrderEntry">
+			<deployment table="TmallOrderEntry" typecode="9862" />
+			<attributes>
+				<attribute type="RefundStatus" qualifier="refundStatus">
+					<persistence type="property"></persistence>
+				</attribute>
+				<attribute type="java.lang.String" qualifier="oid">
+					<modifiers optional="false" search="true"/>
+					<persistence type="property"></persistence>
+				</attribute>
+				<attribute type="java.util.Date" qualifier="endTime">
+					<persistence type="property"></persistence>
+				</attribute>
+				<attribute type="TmallOrderStatus" qualifier="entryStatus">
+					<description>Tmall Order Entry Status</description>
+					<modifiers />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="waitMarketPlaceResponse" type="java.lang.Boolean">
+					<description>Flag to indicate whether there is action before and wait marketplace response</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="Marketplace" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.Marketplace">
+			<deployment table="Marketplace" typecode="9865" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Code</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="localized:java.lang.String">
+					<description>Name</description>
+					<modifiers optional="false" unique="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="url" type="java.lang.String">
+					<description>URL</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="adapterUrl" type="java.lang.String">
+					<description>Adapter URL</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="timezone" type="java.lang.String">
+					<description>Interface Timezone</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="MarketplaceSeller" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.MarketplaceSeller">
+			<deployment table="MarketplaceSeller" typecode="9866" />
+			<attributes>
+				<attribute qualifier="name" type="java.lang.String">
+					<description>Seller Name</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="baseStore" type="BaseStore">
+					<description>Base Store</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="marketplace" type="Marketplace">
+					<description>Marketplace</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="MarketplaceStore" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.MarketplaceStore">
+			<deployment table="MarketplaceStore" typecode="9867" />
+			<attributes>
+				<attribute qualifier="name" type="java.lang.String">
+					<description>Marketplace Store Name</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="orderStartTime" type="java.util.Date">
+					<description>Order Start Time</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="orderEndTime" type="java.util.Date">
+					<description>Order End Time</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="requestStartTime" type="java.util.Date">
+					<description>Request Start Time</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="requestEndTime" type="java.util.Date">
+					<description>Request End Time</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="integrationId" type="java.lang.String">
+					<description>Integration Id</description>
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="authorized" type="java.lang.Boolean">
+					<description>Flag to indicate whether authorized or not</description>
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="subscribeorder" type="java.lang.Boolean">
+					<description>Flag to indicate whether subscribed or not</description>
+					<defaultvalue>java.lang.Boolean.FALSE</defaultvalue>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="marketplace" type="Marketplace">
+					<description>Marketplace</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="currency" type="Currency">
+					<description>The currency context</description>
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+				<attribute qualifier="catalogVersion" type="CatalogVersion">
+					<description>The target product catalog version (ONLINE version required)</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="url" type="java.lang.String">
+					<description>Store URL</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="defaultReturnAddress" type="Address">
+					<description>Default Return Address</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="TmallOrderStatus" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.TmallOrderStatus">
+			<deployment table="TmallOrderStatus" typecode="9868" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Tmall order status code</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="localized:java.lang.String">
+					<description>Tmall order status name</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="description" type="java.lang.String">
+					<description>Tmall order status description</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="orderStatus" type="OrderStatus">
+					<description>counterpart order status</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="TmallCustomer" extends="Customer" autocreate="true" generate="true">
+			<deployment table="TmallCustomer" typecode="9869" />
+			<attributes>
+				<attribute qualifier="nickName" type="java.lang.String">
+					<description>Buyer Nickname</description>
+					<persistence type="property" />
+					<modifiers optional="false" />
+				</attribute>
+			</attributes>
+		</itemtype>
+
+		<itemtype code="TmallOrderType" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.TmallOrderType">
+			<deployment table="TmallOrderType" typecode="9870" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Tmall order type code</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="localized:java.lang.String">
+					<description>Tmall order type name</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="description" type="java.lang.String">
+					<description>Tmall order type description</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype code="MarketplaceLog" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.MarketplaceLog">
+			<deployment table="MarketplaceLog" typecode="9888" />
+			<attributes>
+				<attribute qualifier="actionuuid" type="java.lang.String">
+					<description>Marketplece Log UUId</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="objectid" type="java.lang.String">
+					<description>Business Id for reference</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="subobjectid" type="java.lang.String">
+					<description>Business Sub Id for reference</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="objecttype" type="java.lang.String">
+					<description>Object Type</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="action" type="java.lang.String">
+					<description>Action</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="actionstatus" type="MarketplaceStatus">
+					<description>Action Status</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="messagesource" type="MessageSource">
+					<description>Message Source</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="message" type="java.lang.String">
+					<description>Message</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="marketplace" type="Marketplace">
+					<description>Marketplace</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="targetobject" type="GenericItem">
+					<description>Target Ojbect to log</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype code="MarketplaceLogHistory" autocreate="true" generate="true" jaloclass="com.hybris.backoffice.jalo.MarketplaceLogHistory">
+			<deployment table="MarketplaceLogHistory" typecode="9879" />
+			<attributes>
+				<attribute qualifier="subactionuuid" type="java.lang.String">
+					<description>Marketplece Log Sub UUId</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="actionuuid" type="java.lang.String">
+					<description>Marketplece Log UUId</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="objectid" type="java.lang.String">
+					<description>Business Id for reference</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="subobjectid" type="java.lang.String">
+					<description>Business Sub Id for reference</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="objecttype" type="java.lang.String">
+					<description>Object Type</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="action" type="java.lang.String">
+					<description>Action</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="actionstatus" type="MarketplaceStatus">
+					<description>Action Status</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="messagesource" type="MessageSource">
+					<description>Message Source</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="message" type="java.lang.String">
+					<description>Message</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="marketplace" type="Marketplace">
+					<description>Marketplace</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="targetobject" type="GenericItem">
+					<description>Target Ojbect to log</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype code="MarketplaceStatus" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.MarketplaceStatus">
+			<deployment table="MarketplaceStatus" typecode="9878" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Marketplace status code</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="localized:java.lang.String">
+					<description>Marketplace status name</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="division" type="java.lang.String">
+					<description>Marketplace status division</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="description" type="java.lang.String">
+					<description>Marketplace status description</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>
+		<itemtype code="MessageSource" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.MessageSource">
+			<deployment table="MessageSource" typecode="9880" />
+			<attributes>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>Message Source code</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="localized:java.lang.String">
+					<description>Message Source name</description>
+					<modifiers optional="false" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="description" type="java.lang.String">
+					<description>Message Source description</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>	
+		<itemtype code="Address" autocreate="false" generate="false">
+			<description>Extending Address type with additional attributes.</description>
+			<attributes>
+				<attribute qualifier="addressType" type="java.lang.String">
+					<description>Address Type</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+			</attributes>
+		</itemtype>		
+	
+		<!-- Hybris Standard Carrier Info -->	
+		<itemtype code="StandardCarrier" generate="true" autocreate="true" jaloclass="com.hybris.backoffice.jalo.StandardCarrier">
+			<deployment table="StandardCarrier" typecode="9881" />
+			<attributes>
+				<attribute qualifier="id" type="java.lang.String">
+					<description>id</description>
+					<modifiers optional="false" unique="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="code" type="java.lang.String">
+					<description>code</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>
+				<attribute qualifier="name" type="localized:java.lang.String">
+					<description>name</description>
+					<modifiers optional="true" />
+					<persistence type="property" />
+				</attribute>				
+			</attributes>
+		</itemtype>		
+	</itemtypes>
+</items>
+

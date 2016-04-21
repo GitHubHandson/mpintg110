@@ -1,0 +1,11 @@
+#Ant properties
+#Mon Nov 09 07:47:12 CET 2015
+builddate=20151109 0747
+description=marketplaceintegrationbackoffice
+group.id=de.hybris.platform
+module.name=platform-module
+name=marketplaceintegrationbackoffice
+releasedate=20151026 1304
+vendor=hybris
+version=5.7.0.0-SNAPSHOT
+version.api=5.7.0

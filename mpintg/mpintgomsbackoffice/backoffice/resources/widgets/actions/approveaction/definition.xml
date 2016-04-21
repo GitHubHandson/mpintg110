@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<action-definition id="de.hybris.mpintgomsbackoffice.actions.approveaction"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:noNamespaceSchemaLocation="http://www.hybris.com/schema/cockpitng/action-definition.xsd">
+
+    <name>approve.action.name</name>
+    <description>Approve Action</description>
+    <author>hybris</author>
+    <version>1.0</version>
+
+    <actionClassName>de.hybris.platform.mpintgomsbackoffice.actions.approve.ConfirmApproveAction</actionClassName>
+    <inputType>com.hybris.backoffice.model.TmallRefundRequestModel</inputType>
+    <outputType>com.hybris.backoffice.model.TmallRefundRequestModel</outputType>
+
+    <iconUri>icons/icon_action_accept_active.png</iconUri>
+    <iconDisabledUri>icons/icon_action_accept_disabled.png</iconDisabledUri>
+    <iconHoverUri>icons/icon_action_accept_hover.png</iconHoverUri>
+
+    <settings>
+        <setting key="viewMode" default-value="iconAndText"/>
+    </settings>
+</action-definition>
